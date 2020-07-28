@@ -1,0 +1,51 @@
+{
+    "menus": [ 
+        {
+            "id": "hot-dogs",
+            "food": [
+                {
+                    "title": "Hot Dog #1",
+                    "description": "Mustard, Relish, Bacon & an Artisan Bun",
+                    "price": "10"
+                },
+                {
+                    "title": "Hot Dog #2",
+                    "description": "Mustard, Relish & an Artisan Bun",
+                    "price": "9"
+                },
+                {
+                    "title": "Specialty Hot Dog #1",
+                    "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
+                    "price": "12"
+                },
+                {
+                    "title": "Specialty Hot Dog #2",
+                    "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
+                    "price": "12.50"
+                }
+            ],
+            "beverages": [
+                {
+                    "title": "Coke",
+                    "price": "2"
+                },
+                {
+                    "title": "Sprite",
+                    "price": "2"
+                },
+                {
+                    "title": "Water",
+                    "price": "1"
+                },
+                {
+                    "title": "Beer",
+                    "price": "5"
+                },
+                {
+                    "title": "Wine",
+                    "price": "6"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Menu</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="Menu">
+        <link rel="stylesheet" href="./styles/main.css">
+        <script src="./lib/mustache.min.js"></script>
+        <script src="./script/main.js"></script>
+    </head>
+    <body>
+        <div class="tam-menu_main">
+            <div class="tam-menu_overlay"></div>
+            <div class="tam-menu_cntr">
+                <div class="tam-menu_food-cntr">
+                    <div id="tam-menu_food" class="tam-menu_item-cntr"></div>
+                </div>
+                <div class="tam-menu_bev-cntr">
+                    <div class="tam-menu_bev-cntr_title">Beverages</div>            
+                    <div id="tam-menu_bev" class="tam-menu_item-cntr tam-menu_bev-item-cntr"></div>
+                </div>
+                <div class="tam-menu_logo"></div>
+            </div>
+        </div>
+    </body>
+    <template id="tam-menu-food-items-TEMPLATE">
+        {{#items}}
+        <div class="tam-menu_item tam-menu_food-item" data-is-visible="1">
+            <div>
+                <div class="tam-menu_food-item_title">{{title}}</div>
+                <div class="tam-menu_food-item_desc">{{description}}</div>
+            </div>
+            <div class="tam-menu_food-item_price">${{price}}</div>
+        </div>
+        {{/items}}
+    </template>
+    <template id="tam-menu-bev-items-TEMPLATE">
+        {{#items}}
+        <div class="tam-menu_item tam-menu_bev-item" data-is-visible="1">
+            <div class="tam-menu_bev-item_title">{{title}}</div>
+            <div class="tam-menu_bev-item_price">${{price}}</div>
+        </div>
+        {{/items}}
+    </template>
+</html>

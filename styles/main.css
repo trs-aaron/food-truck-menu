@@ -1,0 +1,186 @@
+@font-face {
+    font-family: Amatic;
+    src: url(../fonts/amatic-sc/AmaticSC-Regular.ttf);
+}
+
+@font-face {
+    font-family: AmaticBold;
+    src: url(../fonts/amatic-sc/AmaticSC-Bold.ttf);
+}
+
+@font-face {
+    font-family: Breve;
+    src: url(../fonts/breve-sc/BreveSc-a1zR.ttf);
+}
+
+@font-face {
+    font-family: Schoolbell;
+    src: url(../fonts/schoolbell/Schoolbell.ttf);
+}
+
+@font-face {
+    font-family: TrenchThin;
+    src: url(../fonts/trench-font/TrenchThin-aZ1J.ttf);
+}
+
+html {
+    font-size: 1vw;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.tam-menu_main {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../img/background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.tam-menu_overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e6e6e6bf;
+}
+
+.tam-menu_cntr {
+    position: fixed;
+    left: 4rem;
+    top: 4rem;
+    right: 4rem;
+    bottom: 4rem;
+}
+
+.tam-menu_logo {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 15rem;
+    width: 15rem;
+    overflow: hidden;
+    background-image: url(../img/logo.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.tam-menu_food-cntr {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 60%;
+    overflow: hidden;
+}
+
+.tam-menu_bev-cntr {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(100% - 17rem);
+    width: auto;
+    max-width: calc(40% - 4rem);
+    overflow: hidden;
+}
+
+.tam-menu_bev-cntr_title {
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+    font-family: AmaticBold;
+    font-size: 3.5rem;
+    color: #cc6600;
+    text-align: right;
+    border-bottom: 0.2rem solid #cc6600;
+}
+
+.tam-menu_item-cntr {
+    display: grid;
+    column-gap: 1rem;
+    row-gap: 2.5rem;
+    grid-template-columns: auto max-content;
+    grid-auto-rows: max-content;
+}
+
+.tam-menu_item-cntr {
+}
+
+.tam-menu_item {
+    opacity: 0;
+}
+
+.tam-menu_item[data-is-visible="1"] {  
+    opacity: 1;
+}
+
+.tam-menu_food-item-cntr {
+    display: grid;
+    column-gap: 1rem;
+    row-gap: 2.5rem;
+    grid-template-columns: auto max-content;
+    grid-auto-rows: max-content;
+}
+
+.tam-menu_food-item {
+    display: contents;
+}
+
+.tam-menu_food-item_title {
+    font-family: AmaticBold;
+    font-size: 3.5rem;
+    color: #cc6600;
+}
+
+.tam-menu_food-item_desc {
+    padding: 1rem 0 0 1rem;
+    font-family: TrenchThin;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #404040;
+}
+
+.tam-menu_food-item_price {
+    font-family: TrenchThin;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #737373;
+    text-align: right;
+}
+
+.tam-menu_bev-item-cntr {
+    display: grid;
+    padding: 0 1rem 0 2rem;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    grid-template-columns: max-content max-content;
+    grid-auto-rows: max-content;
+}
+
+.tam-menu_bev-item {
+    display: contents;
+}
+
+.tam-menu_bev-item_title {
+    font-family: TrenchThin;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #404040;
+    text-align: right;
+}
+
+.tam-menu_bev-item_price {
+    font-family: TrenchThin;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #737373;
+    text-align: right;
+}
