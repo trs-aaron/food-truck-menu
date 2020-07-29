@@ -104,11 +104,6 @@ body {
 }
 
 .tam-menu_item-cntr {
-    display: grid;
-    column-gap: 1rem;
-    row-gap: 2.5rem;
-    grid-template-columns: auto max-content;
-    grid-auto-rows: max-content;
 }
 
 .tam-menu_item-cntr {

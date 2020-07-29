@@ -136,6 +136,8 @@
         }
     }
 
+    MenuItemCntr.ITEM_CNTR_EL_CLASS = 'tam-menu_item-cntr';
+
 
     class Menu {
 
@@ -220,8 +222,8 @@
 
 
     async function render(config) {
-        let foodCntrEl = document.getElementById(Menu.FOOD_CNTR_ID);
-        let bevCntrEl = document.getElementById(Menu.BEV_CNTR_ID);
+        let foodCntrEl = document.getElementById(Menu.FOOD_CNTR_ID).getElementsByClassName(MenuItemCntr.ITEM_CNTR_EL_CLASS)[0];
+        let bevCntrEl = document.getElementById(Menu.BEV_CNTR_ID).getElementsByClassName(MenuItemCntr.ITEM_CNTR_EL_CLASS)[0];
         let foodItemsTmpl = document.getElementById(FOOD_ITEMS_TMPL_ID).innerHTML;
         let bevItemsTmpl = document.getElementById(BEV_ITEMS_TMPL_ID).innerHTML;
 
