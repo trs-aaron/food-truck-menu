@@ -25,20 +25,20 @@
     </body>
     <template id="tam-menu-food-items-TEMPLATE">
         {{#items}}
-        <div class="tam-menu_item tam-menu_food-item" data-is-visible="1">
+        <div class="tam-menu_item tam-menu_food-item" data-is-visible="0">
             <div>
-                <div class="tam-menu_food-item_title">{{title}}</div>
-                <div class="tam-menu_food-item_desc">{{description}}</div>
+                <div class="tam-menu_item_field tam-menu_food-item_title">{{title}}</div>
+                <div class="tam-menu_item_field tam-menu_food-item_desc">{{description}}</div>
             </div>
-            <div class="tam-menu_food-item_price">${{price}}</div>
+            <div class="tam-menu_item_field tam-menu_food-item_price">${{price}}</div>
         </div>
         {{/items}}
     </template>
     <template id="tam-menu-bev-items-TEMPLATE">
         {{#items}}
-        <div class="tam-menu_item tam-menu_bev-item" data-is-visible="1">
-            <div class="tam-menu_bev-item_title">{{title}}</div>
-            <div class="tam-menu_bev-item_price">${{price}}</div>
+        <div class="tam-menu_item tam-menu_bev-item" data-is-visible="0">
+            <div class="tam-menu_item_field tam-menu_bev-item_title">{{title}}</div>
+            <div class="tam-menu_item_field tam-menu_bev-item_price">${{price}}</div>
         </div>
         {{/items}}
     </template>

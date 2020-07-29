@@ -50,7 +50,7 @@ body {
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: #e6e6e6bf;
+    background-color: #262626e6;
 }
 
 .tam-menu_cntr {
@@ -115,10 +115,15 @@ body {
 }
 
 .tam-menu_item {
-    opacity: 0;
+
 }
 
-.tam-menu_item[data-is-visible="1"] {  
+.tam-menu_item_field {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.tam-menu_item[data-is-visible="1"] .tam-menu_item_field {
     opacity: 1;
 }
 
@@ -145,14 +150,14 @@ body {
     font-family: TrenchThin;
     font-size: 2.5rem;
     font-weight: 900;
-    color: #404040;
+    color: #d9d9d9;
 }
 
 .tam-menu_food-item_price {
     font-family: TrenchThin;
     font-size: 3.5rem;
     font-weight: 900;
-    color: #737373;
+    color: #999999;
     text-align: right;
 }
 
@@ -173,7 +178,7 @@ body {
     font-family: TrenchThin;
     font-size: 2.5rem;
     font-weight: 900;
-    color: #404040;
+    color: #d9d9d9;
     text-align: right;
 }
 
@@ -181,6 +186,6 @@ body {
     font-family: TrenchThin;
     font-size: 2.5rem;
     font-weight: 900;
-    color: #737373;
+    color: #999999;
     text-align: right;
 }

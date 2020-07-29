@@ -1,7 +1,10 @@
 {
-    "menus": [ 
-        {
+    "progressionDelay": 3000,
+    "currentMenuId": "hot-dogs",
+    "menus": {
+        "hot-dogs": {
             "id": "hot-dogs",
+            "title": "Hot Dogs",
             "food": [
                 {
                     "title": "Hot Dog #1",
@@ -14,12 +17,52 @@
                     "price": "9"
                 },
                 {
-                    "title": "Specialty Hot Dog #1",
+                    "title": "Hot Dog #3",
                     "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
                     "price": "12"
                 },
                 {
-                    "title": "Specialty Hot Dog #2",
+                    "title": "Hot Dog #4",
+                    "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
+                    "price": "12.50"
+                },
+                {
+                    "title": "Hot Dog #5",
+                    "description": "Mustard, Relish, Bacon & an Artisan Bun",
+                    "price": "10"
+                },
+                {
+                    "title": "Hot Dog #6",
+                    "description": "Mustard, Relish & an Artisan Bun",
+                    "price": "9"
+                },
+                {
+                    "title": "Hot Dog #7",
+                    "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
+                    "price": "12"
+                },
+                {
+                    "title": "Hot Dog #8",
+                    "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
+                    "price": "12.50"
+                },
+                {
+                    "title": "Hot Dog #9",
+                    "description": "Mustard, Relish, Bacon & an Artisan Bun",
+                    "price": "10"
+                },
+                {
+                    "title": "Hot Dog #10",
+                    "description": "Mustard, Relish & an Artisan Bun",
+                    "price": "9"
+                },
+                {
+                    "title": "Hot Dog #11",
+                    "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
+                    "price": "12"
+                },
+                {
+                    "title": "Hot Dog #12",
                     "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
                     "price": "12.50"
                 }
@@ -35,7 +78,7 @@
                 },
                 {
                     "title": "Water",
-                    "price": "1"
+                    "price": "1.50"
                 },
                 {
                     "title": "Beer",
@@ -47,5 +90,5 @@
                 }
             ]
         }
-    ]
+    }
 }
