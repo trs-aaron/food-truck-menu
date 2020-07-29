@@ -1,70 +1,40 @@
 {
-    "progressionDelay": 3000,
-    "currentMenuId": "hot-dogs",
+    "progressionDelay": 10000,
+    "currentMenuId": "tacos",
     "menus": {
-        "hot-dogs": {
-            "id": "hot-dogs",
-            "title": "Hot Dogs",
+        "tacos": {
+            "id": "tacos",
+            "title": "Tacos",
             "food": [
                 {
-                    "title": "Hot Dog #1",
-                    "description": "Mustard, Relish, Bacon & an Artisan Bun",
+                    "title": "Skirt Steak Taco",
+                    "description": "Skirt Steak Marinated with Coriander & Garlic then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
                     "price": "10"
                 },
                 {
-                    "title": "Hot Dog #2",
-                    "description": "Mustard, Relish & an Artisan Bun",
+                    "title": "Chicken Taco",
+                    "description": "Chicken Marinated in Citrus & Guajillo Chili then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
                     "price": "9"
                 },
                 {
-                    "title": "Hot Dog #3",
-                    "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
+                    "title": "Chips & Salsa",
+                    "description": null,
+                    "price": "9"
+                },
+                {
+                    "title": "Bacon Breakfast Burrito",
+                    "description": "Bacon, Egg & Cheese",
                     "price": "12"
                 },
                 {
-                    "title": "Hot Dog #4",
-                    "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
+                    "title": "Potato Breakfast Burrito",
+                    "description": "Potato, Egg & Cheese",
                     "price": "12.50"
                 },
                 {
-                    "title": "Hot Dog #5",
-                    "description": "Mustard, Relish, Bacon & an Artisan Bun",
+                    "title": "Sausage Breakfast Burrito",
+                    "description": "Sausage, Egg & Cheese",
                     "price": "10"
-                },
-                {
-                    "title": "Hot Dog #6",
-                    "description": "Mustard, Relish & an Artisan Bun",
-                    "price": "9"
-                },
-                {
-                    "title": "Hot Dog #7",
-                    "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
-                    "price": "12"
-                },
-                {
-                    "title": "Hot Dog #8",
-                    "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
-                    "price": "12.50"
-                },
-                {
-                    "title": "Hot Dog #9",
-                    "description": "Mustard, Relish, Bacon & an Artisan Bun",
-                    "price": "10"
-                },
-                {
-                    "title": "Hot Dog #10",
-                    "description": "Mustard, Relish & an Artisan Bun",
-                    "price": "9"
-                },
-                {
-                    "title": "Hot Dog #11",
-                    "description": "Onion Strings, Mustard, Relish, Bacon & an Artisan Bun",
-                    "price": "12"
-                },
-                {
-                    "title": "Hot Dog #12",
-                    "description": "Pork Belly, Aiolo, Onion Strings, Relish, Bacon & an Artisan Bun",
-                    "price": "12.50"
                 }
             ],
             "beverages": [
@@ -73,20 +43,28 @@
                     "price": "2"
                 },
                 {
+                    "title": "Diet Coke",
+                    "price": "2"
+                },
+                {
                     "title": "Sprite",
                     "price": "2"
                 },
                 {
-                    "title": "Water",
-                    "price": "1.50"
-                },
-                {
-                    "title": "Beer",
+                    "title": "Monster",
                     "price": "5"
                 },
                 {
-                    "title": "Wine",
+                    "title": "Monster Espresso",
                     "price": "6"
+                },
+                {
+                    "title": "Gatorade",
+                    "price": "4"
+                },
+                {
+                    "title": "Gatorade 0",
+                    "price": "4"
                 }
             ]
         }
