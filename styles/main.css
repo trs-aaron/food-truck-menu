@@ -9,16 +9,6 @@
 }
 
 @font-face {
-    font-family: Breve;
-    src: url(../fonts/breve-sc/BreveSc-a1zR.ttf);
-}
-
-@font-face {
-    font-family: Schoolbell;
-    src: url(../fonts/schoolbell/Schoolbell.ttf);
-}
-
-@font-face {
     font-family: TrenchThin;
     src: url(../fonts/trench-font/TrenchThin-aZ1J.ttf);
 }
@@ -30,6 +20,10 @@ html {
 body {
     margin: 0;
     padding: 0;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;    
 }
 
 .tam-menu_main {
@@ -38,7 +32,7 @@ body {
     top: 0;
     right: 0;
     bottom: 0;
-    background-image: url(../img/background.jpg);
+    background-image: url(../img/background.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -55,10 +49,10 @@ body {
 
 .tam-menu_cntr {
     position: fixed;
-    left: 4rem;
-    top: 4rem;
-    right: 4rem;
-    bottom: 4rem;
+    left: 3rem;
+    top: 3rem;
+    right: 3rem;
+    bottom: 3rem;
 }
 
 .tam-menu_logo {
@@ -68,7 +62,7 @@ body {
     height: 15rem;
     width: 15rem;
     overflow: hidden;
-    background-image: url(../img/logo.png);
+    background-image: url(../svg/mountain-bites-logo.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -98,9 +92,9 @@ body {
     padding: 0 1rem;
     font-family: AmaticBold;
     font-size: 3.5rem;
-    color: #cc6600;
+    color: #f7733d;
     text-align: right;
-    border-bottom: 0.2rem solid #cc6600;
+    border-bottom: 0.2rem solid #f7733d;
 }
 
 .tam-menu_item-cntr {
@@ -136,23 +130,23 @@ body {
 
 .tam-menu_food-item_title {
     font-family: AmaticBold;
-    font-size: 3.5rem;
-    color: #cc6600;
+    font-size: 3rem;
+    color: #f7733d;
 }
 
 .tam-menu_food-item_desc {
     padding: 1rem 0 0 1rem;
     font-family: TrenchThin;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 900;
-    color: #d9d9d9;
+    color: #fcfcfc;
 }
 
 .tam-menu_food-item_price {
     font-family: TrenchThin;
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 900;
-    color: #999999;
+    color: #ACACAC;
     text-align: right;
 }
 
@@ -160,7 +154,7 @@ body {
     display: grid;
     padding: 0 1rem 0 2rem;
     column-gap: 2rem;
-    row-gap: 1rem;
+    row-gap: 0.5rem;
     grid-template-columns: max-content max-content;
     grid-auto-rows: max-content;
 }
@@ -171,16 +165,16 @@ body {
 
 .tam-menu_bev-item_title {
     font-family: TrenchThin;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 900;
-    color: #d9d9d9;
+    color: #fcfcfc;
     text-align: right;
 }
 
 .tam-menu_bev-item_price {
     font-family: TrenchThin;
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 900;
-    color: #999999;
+    color: #ACACAC;
     text-align: right;
 }
