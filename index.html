@@ -11,37 +11,43 @@
     <body>
         <div class="tam-menu_main">
             <div class="tam-menu_overlay"></div>
-            <div class="tam-menu_cntr">
-                <div id="tam-menu_food" class="tam-menu_food-cntr">
-                    <div class="tam-menu_item-cntr tam-menu_food-item-cntr"></div>
-                </div>
-                <div id="tam-menu_bev" class="tam-menu_bev-cntr">
-                    <div class="tam-menu_bev-cntr_title">Beverages</div>            
-                    <div class="tam-menu_item-cntr tam-menu_bev-item-cntr"></div>
-                </div>
+            <div id="tam-menu_cntr" class="tam-menu_cntr" data-is-visible="0" data-has-food="0" data-other-count="0">
+                <div id="tam-menu_food" class="tam-menu_items tam-menu_food-cntr"></div>
+                <div id="tam-menu_other" class="tam-menu_other-cntr"></div>
                 <div class="tam-menu_logo"></div>
             </div>
         </div>
     </body>
     <template id="tam-menu-food-items-TEMPLATE">
-        {{#items}}
-        <div class="tam-menu_item tam-menu_food-item" data-is-visible="0">
-            <div>
-                <div class="tam-menu_item_field tam-menu_food-item_title">{{title}}</div>
-                {{#description}}
-                <div class="tam-menu_item_field tam-menu_food-item_desc">{{description}}</div>
-                {{/description}}
+        <div class="tam-menu_items-cntr tam-menu_food-item-cntr">
+            {{#items}}
+            <div class="tam-menu_item tam-menu_food-item" data-is-visible="0" data-is-available="{{available}}">
+                <div>
+                    <div class="tam-menu_item_field tam-menu_food-item_title">{{title}}</div>
+                    {{#description}}
+                    <div class="tam-menu_item_field tam-menu_food-item_desc">{{description}}</div>
+                    {{/description}}
+                </div>
+                <div class="tam-menu_item_field tam-menu_food-item_price">${{price}}</div>
             </div>
-            <div class="tam-menu_item_field tam-menu_food-item_price">${{price}}</div>
+            {{/items}}
         </div>
-        {{/items}}
     </template>
-    <template id="tam-menu-bev-items-TEMPLATE">
-        {{#items}}
-        <div class="tam-menu_item tam-menu_bev-item" data-is-visible="0">
-            <div class="tam-menu_item_field tam-menu_bev-item_title">{{title}}</div>
-            <div class="tam-menu_item_field tam-menu_bev-item_price">${{price}}</div>
+    <template id="tam-menu-extra-items-TEMPLATE">
+        {{#sections}}
+        <div class="tam-menu_extras-cntr">
+            <div class="tam-menu_extras_title">{{title}}</div>
+            <div class="tam-menu_items tam-menu_extra-items">
+                <div class="tam-menu_items-cntr tam-menu_extra-items-cntr">
+                    {{#items}}
+                    <div class="tam-menu_item tam-menu_extra-item" data-is-visible="0" data-is-available="{{available}}">
+                        <div class="tam-menu_item_field tam-menu_extra-item_title">{{title}}</div>
+                        <div class="tam-menu_item_field tam-menu_extra-item_price">${{price}}</div>
+                    </div>
+                    {{/items}}
+                </div>
+            </div>
         </div>
-        {{/items}}
+        {{/sections}}
     </template>
 </html>

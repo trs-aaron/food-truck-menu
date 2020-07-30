@@ -53,14 +53,20 @@ body {
     top: 3rem;
     right: 3rem;
     bottom: 3rem;
+    opacity: 0;
+    transition: opacity 400ms ease;
+}
+
+.tam-menu_cntr[data-is-visible="1"] {
+    opacity: 1;
 }
 
 .tam-menu_logo {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    height: 15rem;
-    width: 15rem;
+    position: fixed;
+    left: 30rem;
+    top: 1rem;
+    height: 13rem;
+    width: 13rem;
     overflow: hidden;
     background-image: url(../svg/mountain-bites-logo.svg);
     background-position: center;
@@ -68,43 +74,110 @@ body {
     background-size: contain;
 }
 
+.tam-menu_cntr[data-has-food="0"] .tam-menu_logo {
+    left: 1rem;
+    top: 1rem;
+}
+
+.tam-menu_cntr[data-other-count="0"] .tam-menu_logo {
+    left: 44rem;
+}
+
+.tam-menu_cntr[data-other-count="1"] .tam-menu_logo {
+    position: absolute;
+    left: auto;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    height: 15rem;
+    width: 15rem;
+}
+
+.tam-menu_cntr[data-has-food="0"][data-other-count="1"] .tam-menu_logo {
+    left: 10rem;
+    top: calc(50% - 15rem);
+    right: auto;
+    bottom: auto;
+    height: 30rem;
+    width: 30rem
+}
+
 .tam-menu_food-cntr {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 13rem;
     bottom: 0;
     width: 60%;
     overflow: hidden;
 }
 
-.tam-menu_bev-cntr {
+.tam-menu_cntr[data-has-food="0"] .tam-menu_food-cntr{
+    display: none;
+}
+
+.tam-menu_cntr[data-other-count="0"] .tam-menu_food-cntr{
+    right: 0;
+    width: auto;
+}
+
+.tam-menu_cntr[data-other-count="1"] .tam-menu_food-cntr{
+    top: 0;
+}
+
+.tam-menu_other-cntr {
+    display: grid;
     position: absolute;
     top: 0;
     right: 0;
-    height: calc(100% - 17rem);
+    bottom: 0;
     width: auto;
     max-width: calc(40% - 4rem);
-    overflow: hidden;
+    row-gap: 1.5rem;
+    grid-template-columns: max-content;
+    grid-auto-rows: auto;
 }
 
-.tam-menu_bev-cntr_title {
-    margin-bottom: 1rem;
-    padding: 0 1rem;
-    font-family: AmaticBold;
-    font-size: 3.5rem;
-    color: #f7733d;
-    text-align: right;
-    border-bottom: 0.2rem solid #f7733d;
+.tam-menu_cntr[data-has-food="0"] .tam-menu_other-cntr {
+    left: 12rem;
+    top: 0;
+    bottom: 0;
+    max-width: 100%;
+    column-gap: 4rem;
+    row-gap: 2rem;
+    align-items: start;
+    justify-content: space-evenly;
+    grid-template-columns: repeat(2, max-content);
+    grid-template-rows: repeat(2, 1fr);
 }
 
-.tam-menu_item-cntr {
+.tam-menu_cntr[data-has-food="0"][data-other-count="1"] .tam-menu_other-cntr {
+    left: 40rem;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: max-content;
+    grid-template-rows: auto;
 }
 
-.tam-menu_item-cntr {
+.tam-menu_cntr[data-has-food="0"][data-other-count="5"] .tam-menu_other-cntr,
+.tam-menu_cntr[data-has-food="0"][data-other-count="6"] .tam-menu_other-cntr {
+    grid-template-columns: repeat(3, max-content);
+}
+
+.tam-menu_cntr[data-other-count="1"] .tam-menu_other-cntr {
+    bottom: 17rem;
+}
+
+.tam-menu_items {
+    display: inherit;
+}
+
+.tam-menu_items-cntr {
+    display: inherit;
 }
 
 .tam-menu_item {
-
+    display: inherit;
 }
 
 .tam-menu_item_field {
@@ -124,6 +197,10 @@ body {
     grid-auto-rows: max-content;
 }
 
+.tam-menu_cntr[data-other-count="0"] .tam-menu_food-item-cntr {
+    grid-template-columns: repeat(2, auto max-content);
+}
+
 .tam-menu_food-item {
     display: contents;
 }
@@ -134,12 +211,23 @@ body {
     color: #f7733d;
 }
 
+.tam-menu_item[data-is-available="0"] .tam-menu_food-item_title {
+    color: #ACACAC;
+    text-decoration: line-through;
+    text-decoration-color: #f7733d;
+    text-decoration-thickness: 0.15rem;
+}
+
 .tam-menu_food-item_desc {
     padding: 1rem 0 0 1rem;
     font-family: TrenchThin;
     font-size: 2rem;
     font-weight: 900;
     color: #fcfcfc;
+}
+
+.tam-menu_item[data-is-available="0"] .tam-menu_food-item_desc {
+    color: #ACACAC;
 }
 
 .tam-menu_food-item_price {
@@ -150,8 +238,41 @@ body {
     text-align: right;
 }
 
-.tam-menu_bev-item-cntr {
+.tam-menu_item[data-is-available="0"] .tam-menu_food-item_price {
+    text-decoration: line-through;
+    text-decoration-color: #f7733d;
+    text-decoration-thickness: 0.15rem;
+}
+
+.tam-menu_extras-cntr {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tam-menu_extras_title {
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+    font-family: AmaticBold;
+    font-size: 3.5rem;
+    color: #f7733d;
+    text-align: right;
+    border-bottom: 0.2rem solid #f7733d;
+}
+
+.tam-menu_cntr[data-has-food="0"] .tam-menu_extras_title {
+    text-align: left;
+}
+
+.tam-menu_extra-items {
+    flex-grow: 1;
+    overflow: hidden;
+    align-self: flex-end;
+}
+
+.tam-menu_extra-items-cntr {
     display: grid;
+    float: right;
     padding: 0 1rem 0 2rem;
     column-gap: 2rem;
     row-gap: 0.5rem;
@@ -159,11 +280,15 @@ body {
     grid-auto-rows: max-content;
 }
 
-.tam-menu_bev-item {
+.tam-menu_cntr[data-has-food="0"] .tam-menu_extra-items-cntr {
+    float: left;
+}
+
+.tam-menu_extra-item {
     display: contents;
 }
 
-.tam-menu_bev-item_title {
+.tam-menu_extra-item_title {
     font-family: TrenchThin;
     font-size: 2rem;
     font-weight: 900;
@@ -171,10 +296,27 @@ body {
     text-align: right;
 }
 
-.tam-menu_bev-item_price {
+.tam-menu_cntr[data-has-food="0"] .tam-menu_extra-item_title {
+    text-align: left;
+}
+
+.tam-menu_item[data-is-available="0"] .tam-menu_extra-item_title {
+    color: #ACACAC;
+    text-decoration: line-through;
+    text-decoration-color: #f7733d;
+    text-decoration-thickness: 0.1rem;
+}
+
+.tam-menu_extra-item_price {
     font-family: TrenchThin;
     font-size: 2rem;
     font-weight: 900;
     color: #ACACAC;
     text-align: right;
+}
+
+.tam-menu_item[data-is-available="0"] .tam-menu_extra-item_price {
+    text-decoration: line-through;
+    text-decoration-color: #f7733d;
+    text-decoration-thickness: 0.1rem;
 }

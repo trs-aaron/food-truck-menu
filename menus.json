@@ -1,70 +1,1021 @@
 {
     "progressionDelay": 10000,
-    "currentMenuId": "tacos",
+    "currentMenuId": "taco3",
     "menus": {
-        "tacos": {
+        "tacos0": {
             "id": "tacos",
             "title": "Tacos",
             "food": [
                 {
                     "title": "Skirt Steak Taco",
                     "description": "Skirt Steak Marinated with Coriander & Garlic then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
-                    "price": "10"
+                    "price": "10",
+                    "available": 1
                 },
                 {
                     "title": "Chicken Taco",
                     "description": "Chicken Marinated in Citrus & Guajillo Chili then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
-                    "price": "9"
+                    "price": "9",
+                    "available": 0
                 },
                 {
                     "title": "Chips & Salsa",
                     "description": null,
-                    "price": "9"
+                    "price": "9",
+                    "available": 1
                 },
                 {
                     "title": "Bacon Breakfast Burrito",
                     "description": "Bacon, Egg & Cheese",
-                    "price": "12"
+                    "price": "12",
+                    "available": 1
                 },
                 {
                     "title": "Potato Breakfast Burrito",
                     "description": "Potato, Egg & Cheese",
-                    "price": "12.50"
+                    "price": "12.50",
+                    "available": 1
                 },
                 {
                     "title": "Sausage Breakfast Burrito",
                     "description": "Sausage, Egg & Cheese",
-                    "price": "10"
+                    "price": "10",
+                    "available": 1
                 }
             ],
-            "beverages": [
+            "other": []
+        },
+        "tacos1": {
+            "id": "tacos",
+            "title": "Tacos",
+            "food": [
                 {
-                    "title": "Coke",
-                    "price": "2"
+                    "title": "Skirt Steak Taco",
+                    "description": "Skirt Steak Marinated with Coriander & Garlic then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "10",
+                    "available": 1
                 },
                 {
-                    "title": "Diet Coke",
-                    "price": "2"
+                    "title": "Chicken Taco",
+                    "description": "Chicken Marinated in Citrus & Guajillo Chili then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "9",
+                    "available": 0
                 },
                 {
-                    "title": "Sprite",
-                    "price": "2"
+                    "title": "Chips & Salsa",
+                    "description": null,
+                    "price": "9",
+                    "available": 1
                 },
                 {
-                    "title": "Monster",
-                    "price": "5"
+                    "title": "Bacon Breakfast Burrito",
+                    "description": "Bacon, Egg & Cheese",
+                    "price": "12",
+                    "available": 1
                 },
                 {
-                    "title": "Monster Espresso",
-                    "price": "6"
+                    "title": "Potato Breakfast Burrito",
+                    "description": "Potato, Egg & Cheese",
+                    "price": "12.50",
+                    "available": 1
                 },
                 {
-                    "title": "Gatorade",
-                    "price": "4"
+                    "title": "Sausage Breakfast Burrito",
+                    "description": "Sausage, Egg & Cheese",
+                    "price": "10",
+                    "available": 1
+                }
+            ],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "tacos2": {
+            "id": "tacos",
+            "title": "Tacos",
+            "food": [
+                {
+                    "title": "Skirt Steak Taco",
+                    "description": "Skirt Steak Marinated with Coriander & Garlic then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "10",
+                    "available": 1
                 },
                 {
-                    "title": "Gatorade 0",
-                    "price": "4"
+                    "title": "Chicken Taco",
+                    "description": "Chicken Marinated in Citrus & Guajillo Chili then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "9",
+                    "available": 0
+                },
+                {
+                    "title": "Chips & Salsa",
+                    "description": null,
+                    "price": "9",
+                    "available": 1
+                },
+                {
+                    "title": "Bacon Breakfast Burrito",
+                    "description": "Bacon, Egg & Cheese",
+                    "price": "12",
+                    "available": 1
+                },
+                {
+                    "title": "Potato Breakfast Burrito",
+                    "description": "Potato, Egg & Cheese",
+                    "price": "12.50",
+                    "available": 1
+                },
+                {
+                    "title": "Sausage Breakfast Burrito",
+                    "description": "Sausage, Egg & Cheese",
+                    "price": "10",
+                    "available": 1
+                }
+            ],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "tacos3": {
+            "id": "tacos",
+            "title": "Tacos",
+            "food": [
+                {
+                    "title": "Skirt Steak Taco",
+                    "description": "Skirt Steak Marinated with Coriander & Garlic then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "10",
+                    "available": 1
+                },
+                {
+                    "title": "Chicken Taco",
+                    "description": "Chicken Marinated in Citrus & Guajillo Chili then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "9",
+                    "available": 0
+                },
+                {
+                    "title": "Chips & Salsa",
+                    "description": null,
+                    "price": "9",
+                    "available": 1
+                },
+                {
+                    "title": "Bacon Breakfast Burrito",
+                    "description": "Bacon, Egg & Cheese",
+                    "price": "12",
+                    "available": 1
+                },
+                {
+                    "title": "Potato Breakfast Burrito",
+                    "description": "Potato, Egg & Cheese",
+                    "price": "12.50",
+                    "available": 1
+                },
+                {
+                    "title": "Sausage Breakfast Burrito",
+                    "description": "Sausage, Egg & Cheese",
+                    "price": "10",
+                    "available": 1
+                }
+            ],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "extra1": {
+            "id": "extra1",
+            "title": "Tacos",
+            "food": [],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "extra2": {
+            "id": "extra2",
+            "title": "Tacos",
+            "food": [],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "extra3": {
+            "id": "extra3",
+            "title": "Tacos",
+            "food": [],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "extra4": {
+            "id": "extra4",
+            "title": "Tacos",
+            "food": [],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "extra5": {
+            "id": "extra5",
+            "title": "Tacos",
+            "food": [],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                },
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        "extra6": {
+            "id": "extra6",
+            "title": "Tacos",
+            "food": [],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "6",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 0
+                        }
+                    ]
+                },
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "5",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "6",
+                            "available": 0
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 0
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "5",
+                            "available": 1
+                        }
+                    ]
                 }
             ]
         }

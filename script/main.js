@@ -1,7 +1,6 @@
 (() => {
     const CONFIG_FILE_PATH = './menus.json';
-    const FOOD_ITEMS_TMPL_ID = 'tam-menu-food-items-TEMPLATE';
-    const BEV_ITEMS_TMPL_ID = 'tam-menu-bev-items-TEMPLATE';
+
 
     class MenuItemField {
 
@@ -61,9 +60,11 @@
             let fieldEls = this._el.getElementsByClassName(MenuItemField.EL_CLASS);
 
             Array.from(fieldEls).forEach((el) => {
-                let field = new MenuItemField(el);
-                field.init();
-                this._fields.push(field);
+                this._fields.push(new MenuItemField(el));
+            });
+
+            this._fields.forEach((f) => {
+                f.init();
             });
         }
     }
@@ -113,9 +114,11 @@
             let itemEls = this._el.getElementsByClassName(MenuItem.EL_CLASS);
 
             Array.from(itemEls).forEach((el) => {
-                let item = new MenuItem(el);
-                item.init();
-                this._items.push(item);
+                this._items.push(new MenuItem(el));
+            });
+
+            this._items.forEach((i) => {
+                i.init();
             });
         }
 
@@ -171,11 +174,10 @@
         }
 
         _isItemInFocus(index) {
-            let itemTop = this._items[index].top;
-            let itemBot = this._items[index].bottom;
-            let cntrTop = this.top;
-            let cntrBot = this.bottom;
-
+            let itop = this._items[index].top;
+            let ibot = this._items[index].bottom;
+            let ctop = this.top;
+            let cbot = this.bottom;
             return (this._items[index] !== null) ? (this._items[index].top >= this.top && this._items[index].bottom <= this.bottom) : false;
         }
 
@@ -230,8 +232,14 @@
                 // Recursively called function with delay timeout to show items.
                 const showFunc = (index) => {
                     if (index < this._items.length && this._items[index] !== null && this._isItemInFocus(index)) {
-                        this._items[index].show();
-                        setTimeout(() => { showFunc(index + 1); }, delay);
+                        try {
+                            this._items[index].show();
+                            setTimeout(() => {
+                                showFunc(index + 1);
+                            }, delay);
+                        } catch(e) {
+                            console.log(e);
+                        }
                     } else {
                         resolve();
                     }
@@ -248,42 +256,87 @@
                     reject();
                 }
 
-                let iTop = this._items[index].top;
-                let isTop = this.itemsTop;
                 let newTop = (this._items[index]) ? (this._items[index].top - this.itemsTop) : 0;
                 this._setItemsTransform(-newTop).then(resolve).catch(reject);
             });
         }
     }
 
-    MenuItemCntr.ITEMS_EL_CLASS = 'tam-menu_item-cntr';
+    MenuItemCntr.ITEMS_EL_CLASS = 'tam-menu_items-cntr';
 
 
     class Menu {
 
-        constructor(itemProgressionDelay) {
-            this._itemProgDelay = itemProgressionDelay;
-            this._foodCntr = null;
-            this._bevCntr = null;
+        constructor() {
+            this._menu = null;
+            this._itemProgDelay = Menu.DEFAULT_PROGRESSION_DELAY;
+            this._cntrEl = null;
+            this._foodCntrEl = null;
+            this._otherCntrEl = null;
+            this._itemCntrs = [];
             this._paused = true;
+            this._foodItemsTmpl = null;
+            this._extraItemsTmpl = null;
         }
 
         get paused() {
             return this._paused;
         }
 
-        init() {
-            let foodCntrEl = document.getElementById(Menu.FOOD_CNTR_ID);
-            let bevCntrEl = document.getElementById(Menu.BEV_CNTR_ID);
+        get hasFood() {
+            return this._cntrEl.getAttribute(Menu.HAS_FOOD_ATTR);
+        }
 
-            this._foodCntr = new MenuItemCntr(foodCntrEl);
-            this._bevCntr = new MenuItemCntr(bevCntrEl);
+        get otherCount() {
+            return this._cntrEl.getAttribute(Menu.OTHER_COUNT_ATTR);
+        }
 
-            this._foodCntr.init();
-            this._bevCntr.init();
+        setMenu(menu) {
+            this._menu = menu;
+        }
 
-            this._foodCntr.show();
-            this._bevCntr.show();
+        setItemProgressionDelay(delay) {
+            this._itemProgDelay = delay;
+        }
+
+        setHasFood(value) {
+            this._cntrEl.setAttribute(Menu.HAS_FOOD_ATTR, (value == true) ? 1 : 0);
+        }
+
+        setOtherCount(value) {
+            this._cntrEl.setAttribute(Menu.OTHER_COUNT_ATTR, value);
+        }
+
+        hide() {
+            this._cntrEl.setAttribute(Menu.VISIBLE_ATTR, 0);
+        }
+
+        show() {
+            this._cntrEl.setAttribute(Menu.VISIBLE_ATTR, 1);
+        }
+
+        async init() {
+            this._cntrEl = document.getElementById(Menu.CNTR_ID);
+            this._foodCntrEl = document.getElementById(Menu.FOOD_CNTR_ID);
+            this._otherCntrEl = document.getElementById(Menu.OTHER_CNTR_ID);
+            this._foodItemsTmpl = document.getElementById(Menu.FOOD_ITEMS_TMPL_ID).innerHTML;
+            this._extraItemsTmpl = document.getElementById(Menu.EXTRA_ITEMS_TMPL_ID).innerHTML;
+
+            await this._getConfig();
+            await this._renderItems();
+
+            let itemCntrEls = document.getElementsByClassName(Menu.ITEMS_EL_CLASS);
+
+            Array.from(itemCntrEls).forEach((el) => {
+                this._itemCntrs.push(new MenuItemCntr(el));
+            });
+
+            this._itemCntrs.forEach((ic) => {
+                ic.init();
+                ic.show();
+            });
+
+            this.show();
         }
 
         restart() {
@@ -300,16 +353,91 @@
             this._startMenuProgressions();
         }
 
+        async _getConfig() {
+            return new Promise(async (resolve, reject) => {
+                let config = null;
+
+                let onError = (msg) => {
+                    alert(msg);
+                    reject(new Error(e));
+                }
+
+                let headers = new Headers();
+                headers.append('pragma', 'no-cache');
+                headers.append('cache-control', 'no-cache');
+
+                let init = {
+                    method: 'GET',
+                    headers: headers,
+                };
+
+                try {
+                    let resp = await fetch(CONFIG_FILE_PATH, init);
+                    config = await resp.json();
+                } catch(e) {
+                    onError('Could not retrieve configuration.');
+                }
+
+                if (!config) {
+                    onError('Could not retrieve configuration.');
+                }
+
+                if (!('progressionDelay' in config) || !('menus' in config)) {
+                    onError('Invalid configuration.');
+                }
+
+                if (isNaN(config.progressionDelay) || config.progressionDelay < 0) {
+                    onError('Progression delay not valid.');
+                }
+
+                if (!config.menus[config.currentMenuId]) {
+                    onError('Current menu id not valid.');
+                }
+
+                if (!(config.currentMenuId in config.menus)) {
+                    onError('Current menu id not valid.');
+                }
+
+                if (!config.menus[config.currentMenuId]) {
+                    onError('Invalid menu configuration.');
+                }
+
+                let menu = (config.currentMenuId !== null && config.currentMenuId !== "" && config.menus && config.menus[config.currentMenuId]) ? config.menus[config.currentMenuId] : null;
+
+                if (!('food' in menu) || !('other' in menu) || !Array.isArray(menu.other)) {
+                    onError('Invalid menu configuration.');
+                }
+
+                this.setItemProgressionDelay(config.progressionDelay);
+                this.setMenu(menu);
+                this.setHasFood((menu.food && Array.isArray(menu.food) && menu.food.length > 0));
+                this.setOtherCount(menu.other.length);
+
+                resolve();
+            });
+        }
+
+        async _renderItems() {
+            if (this._menu) {
+                if (this._menu.food && this._menu.food.length > 0) {
+                    this._foodCntrEl.innerHTML = Mustache.render(this._foodItemsTmpl, { items: this._menu.food });
+                }
+
+                if (this._menu.other && this._menu.other.length > 0) {
+                    this._otherCntrEl.innerHTML = Mustache.render(this._extraItemsTmpl, { sections: this._menu.other });
+                }
+            }
+        }
+
         _startMenuProgressions() {
             const progFunc = () => {
                 if (this.paused) {
                     return;
                 }
 
-                Promise.allSettled([
-                    this._foodCntr.progressItems(),
-                    this._bevCntr.progressItems()
-                ]).then(() => {
+                let p = this._itemCntrs.map((ic) => ic.progressItems());
+
+                Promise.allSettled(p).then(() => {
                     setTimeout(progFunc, this._itemProgDelay);
                 }).catch((error) => {
                     console.log(error);
@@ -321,68 +449,21 @@
         }
     }
 
+    Menu.DEFAULT_PROGRESSION_DELAY = 10000;
+    Menu.CNTR_ID = 'tam-menu_cntr';
     Menu.FOOD_CNTR_ID = 'tam-menu_food';
-    Menu.BEV_CNTR_ID = 'tam-menu_bev';
-
-    async function getConfig() {
-        let resp = await fetch(CONFIG_FILE_PATH);
-        let config = await resp.json();
-
-        return {
-            progressionDelay: config.progressionDelay,
-            menu: (config.currentMenuId !== null && config.currentMenuId !== "" && config.menus && config.menus[config.currentMenuId]) ? config.menus[config.currentMenuId] : null
-        }
-    }
-
-    async function init(config) {
-        let menu = new Menu(config.progressionDelay);
-        menu.init();
-        menu.start();
-    }
-
-
-    async function render(config) {
-        let foodCntrEl = document.getElementById(Menu.FOOD_CNTR_ID).getElementsByClassName(MenuItemCntr.ITEMS_EL_CLASS)[0];
-        let bevCntrEl = document.getElementById(Menu.BEV_CNTR_ID).getElementsByClassName(MenuItemCntr.ITEMS_EL_CLASS)[0];
-        let foodItemsTmpl = document.getElementById(FOOD_ITEMS_TMPL_ID).innerHTML;
-        let bevItemsTmpl = document.getElementById(BEV_ITEMS_TMPL_ID).innerHTML;
-
-        if (config.menu.food && config.menu.food.length > 0) {
-            foodCntrEl.innerHTML = Mustache.render(foodItemsTmpl, { items: config.menu.food });
-        }
-
-        if (config.menu.beverages && config.menu.beverages.length > 0) {
-            bevCntrEl.innerHTML = Mustache.render(bevItemsTmpl, { items: config.menu.beverages });
-        }
-    }
+    Menu.OTHER_CNTR_ID = 'tam-menu_other';
+    Menu.ITEMS_EL_CLASS = 'tam-menu_items';
+    Menu.VISIBLE_ATTR = 'data-is-visible';
+    Menu.HAS_FOOD_ATTR = 'data-has-food';
+    Menu.OTHER_COUNT_ATTR = 'data-other-count';
+    Menu.FOOD_ITEMS_TMPL_ID = 'tam-menu-food-items-TEMPLATE';
+    Menu.EXTRA_ITEMS_TMPL_ID = 'tam-menu-extra-items-TEMPLATE';
 
 
     window.onload = async () => {
-        let config = null;
-
-        try {
-            config = await getConfig();
-        } catch(e) {
-            alert('Could not retrieve configuration.');
-            return;
-        }
-
-        if (!config) {
-            alert('Could not retrieve configuration.');
-            return;
-        }
-
-        if (!config['progressionDelay'] || isNaN(config.progressionDelay) || config.progressionDelay < 0) {
-            alert('Progression delay not valid.');
-            return;
-        }
-
-        if (!config['menu']) {
-            alert('Current menu id not valid.');
-            return;
-        }
-
-        render(config);
-        init(config);
+        let menu = new Menu();
+        await menu.init();
+        menu.start();
     };
 })();
