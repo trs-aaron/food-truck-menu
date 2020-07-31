@@ -1,0 +1,153 @@
+{
+    "progressionDelay": 10000,
+    "currentMenuId": "tacos",
+    "menus": {
+        "tacos": {
+            "id": "tacos",
+            "title": "Tacos",
+            "food": [
+                {
+                    "title": "Skirt Steak Taco",
+                    "description": "Skirt Steak Marinated with Coriander & Garlic then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "10",
+                    "available": 1
+                },
+                {
+                    "title": "Chicken Taco",
+                    "description": "Chicken Marinated in Citrus & Guajillo Chili then grilled to perfection. Topped with Pico de Gallo & served with a choice of red or green salsa on the side.",
+                    "price": "10",
+                    "available": 1
+                },
+                {
+                    "title": "Octopus Cocktail",
+                    "description": "Octopus, avocado, cucumber, tomato & tortilla chips",
+                    "price": "8",
+                    "available": 1
+                },
+                {
+                    "title": "Scallop and Shrimp Ceviche Tostada",
+                    "description": "Scallops, shrimp, avocado, radish, cilantro & chili de arbol.",
+                    "price": "7",
+                    "available": 1
+                },
+                {
+                    "title": "Chips & Salsa",
+                    "description": null,
+                    "price": "4",
+                    "available": 1
+                },
+                {
+                    "title": "Guacamole",
+                    "description": null,
+                    "price": "2",
+                    "available": 1
+                },
+                {
+                    "title": "Bacon Breakfast Burrito",
+                    "description": "Bacon, Egg & Cheese",
+                    "price": "10",
+                    "available": 1
+                },
+                {
+                    "title": "Potato Breakfast Burrito",
+                    "description": "Potato, Egg & Cheese",
+                    "price": "10",
+                    "available": 1
+                },
+                {
+                    "title": "Sausage Breakfast Burrito",
+                    "description": "Sausage, Egg & Cheese",
+                    "price": "10",
+                    "available": 1
+                }
+            ],
+            "other": [
+                {
+                    "title": "Beverages",
+                    "items": [
+                        {
+                            "title": "Coke",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Diet Coke",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sprite",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Monster Espresso",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Gatorade 0",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Candy",
+                    "items": [
+                        {
+                            "title": "Snickers",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Twix",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Reese's",
+                            "price": "2",
+                            "available": 1
+                        },
+                        {
+                            "title": "Milky Way",
+                            "price": "2",
+                            "available": 1
+                        }
+                    ]
+                },
+                {
+                    "title": "Ice Cream",
+                    "items": [
+                        {
+                            "title": "Oreo Bar",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Cone King",
+                            "price": "4",
+                            "available": 1
+                        },
+                        {
+                            "title": "Sandwich",
+                            "price": "4",
+                            "available": 1
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

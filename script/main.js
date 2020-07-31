@@ -1,5 +1,5 @@
 (() => {
-    const CONFIG_FILE_PATH = './menus.json';
+    const CONFIG_FILE_PATH = './config/menus.json';
 
 
     class MenuItemField {
