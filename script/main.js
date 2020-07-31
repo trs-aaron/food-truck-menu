@@ -80,6 +80,8 @@
             this._el = el;
             this._itemsEl = null;
             this._items = [];
+            this._firstVisibleIndex = null;
+            this._lastVisibleIndex = null;
         }
 
         get top() {
@@ -98,14 +100,16 @@
             return this._itemsEl.getBoundingClientRect().bottom;
         }
 
-        areAllItemsVisible() {
-            for (let i = 0; i < this._items.length; i++) {
-                if (!this._items[i].isVisible) {
-                    return false;
-                }
-            }
+        get firstVisibleIndex() {
+            return this._firstVisibleIndex;
+        }
 
-            return true;
+        get lastVisibleIndex() {
+            return this._lastVisibleIndex;
+        }
+
+        areAllItemsVisible() {
+            return (this._firstVisibleIndex === 0 && this._lastVisibleIndex === (this._items.length - 1));
         }
 
         init() {
@@ -120,10 +124,12 @@
             this._items.forEach((i) => {
                 i.init();
             });
+
+            this._setVisibleIndexes();
         }
 
         async show() {
-            await this._showItems(0);
+            await this._showItems();
         }
 
         async hide() {
@@ -135,50 +141,41 @@
                 return;
             }
 
-            let lastVisIndex = this._getLastVisibleIndex();
-            let firstNewVisIndex = 0;
+            let moveToItemIndex = this._lastVisibleIndex + 1;
+            moveToItemIndex = (moveToItemIndex < this._items.length) ? moveToItemIndex : 0;
 
-            if (lastVisIndex !== null && !isNaN(lastVisIndex)) {
-                firstNewVisIndex = lastVisIndex + 1;
-            }
-
-            firstNewVisIndex = (this._items.length > firstNewVisIndex) ? firstNewVisIndex : 0;
-
-            await this._hideItems();
-            await this._moveToItem(firstNewVisIndex);
-            await this._showItems(firstNewVisIndex);
-        }
-
-        _getFirstVisibleIndex() {
-            for (let i = 0; i < this._items.length; i++) {
-                if ( this._items[i].isVisible) {
-                    return i;
-                }
-            }
-
-            return null;
-        }
-
-        _getLastVisibleIndex() {
-            let firstVisIndex = this._getFirstVisibleIndex();
-
-            if (firstVisIndex !== null && !isNaN(firstVisIndex)) {
-                for(let i = firstVisIndex; i < this._items.length; i++) {
-                    if (!this._items[i].isVisible) {
-                        return (i - 1);
-                    }
-                }
-            }
-
-            return null;
+            await this._moveToItem(moveToItemIndex);
+            this._setVisibleIndexes();
         }
 
         _isItemInFocus(index) {
-            let itop = this._items[index].top;
-            let ibot = this._items[index].bottom;
-            let ctop = this.top;
-            let cbot = this.bottom;
             return (this._items[index] !== null) ? (this._items[index].top >= this.top && this._items[index].bottom <= this.bottom) : false;
+        }
+
+        _setVisibleIndexes() {
+            for (let i = 0; i <= this._items.length; i++) {
+                if (i >= this._items.length) {
+                    this._firstVisibleIndex = 0;
+                    break;
+                }
+
+                if (this._isItemInFocus(i)) {
+                    this._firstVisibleIndex = i;
+                    break;
+                }
+            }
+
+            for (let i = this._firstVisibleIndex; i <= this._items.length; i++) {
+                if (i >= this._items.length) {
+                    this._lastVisibleIndex = (this._items.length - 1)
+                    break;
+                }
+
+                if (!this._isItemInFocus(i)) {
+                    this._lastVisibleIndex = Math.max((i - 1), 0);
+                    break;
+                }
+            }
         }
 
         async _setItemsTransform(y) {
@@ -201,18 +198,21 @@
 
         async _hideItems(delay=250) {
             return new Promise((resolve, reject) => {
+                // Parameter check.
                 if (isNaN(delay)) {
                     reject();
                 }
 
                 // Recursively called function with delay timeout to hide items.
-                const hideFunc = (index) => {
-                    if (index < this._items.length) {
+                const hideFunc = (iteration) => {
+                    if (iteration < this._items.length) {
+                        let index = (iteration + this._firstVisibleIndex) % this._items.length; 
+
                         if (this._items[index] !== null && this._isItemInFocus(index)) {
                             this._items[index].hide();
                         }
 
-                        setTimeout(() => { hideFunc(index + 1); }, delay);
+                        setTimeout(() => { hideFunc(iteration + 1); }, delay);
                     } else {
                         resolve();
                     }
@@ -222,30 +222,26 @@
             });
         }
 
-        async _showItems(startIndex=0, delay=250) {
+        async _showItems(delay=250) {
             return new Promise((resolve, reject) => {
                 // Parameter check.
-                if (isNaN(startIndex) || isNaN(delay)) {
+                if (isNaN(delay)) {
                     reject();
                 }
 
                 // Recursively called function with delay timeout to show items.
                 const showFunc = (index) => {
-                    if (index < this._items.length && this._items[index] !== null && this._isItemInFocus(index)) {
-                        try {
+                    if (index < this._items.length && index <= this._lastVisibleIndex) {
+                        if (this._items[index]) {
                             this._items[index].show();
-                            setTimeout(() => {
-                                showFunc(index + 1);
-                            }, delay);
-                        } catch(e) {
-                            console.log(e);
                         }
+                        setTimeout(() => { showFunc(index + 1); }, delay);
                     } else {
                         resolve();
                     }
                 };
 
-                showFunc(startIndex);
+                showFunc(this._firstVisibleIndex);
             });
         }
 
@@ -429,20 +425,26 @@
             }
         }
 
+        async _progressMenu() {
+            let itemCntrs = this._itemCntrs.filter((ic) => !ic.areAllItemsVisible());
+            await Promise.all(itemCntrs.map((ic) => ic.hide()));
+            await Promise.all(itemCntrs.map((ic) => ic.progressItems()));
+            await Promise.all(itemCntrs.map((ic) => ic.show()));
+        }
+
         _startMenuProgressions() {
-            const progFunc = () => {
+            const progFunc = async () => {
                 if (this.paused) {
                     return;
                 }
 
-                let p = this._itemCntrs.map((ic) => ic.progressItems());
-
-                Promise.allSettled(p).then(() => {
+                try {
+                    await this._progressMenu();
                     setTimeout(progFunc, this._itemProgDelay);
-                }).catch((error) => {
-                    console.log(error);
+                } catch(e) {
+                    console.log(e);
                     this.restart();
-                })
+                }
             }
 
             setTimeout(() => { progFunc(); }, this._itemProgDelay);
