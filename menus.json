@@ -1,6 +1,6 @@
 {
     "progressionDelay": 10000,
-    "currentMenuId": "taco3",
+    "currentMenuId": "tacos3",
     "menus": {
         "tacos0": {
             "id": "tacos",
@@ -19,9 +19,27 @@
                     "available": 0
                 },
                 {
+                    "title": "Octopus Cocktail",
+                    "description": "Octopus, avocado, cucumber, tomato & tortilla chips",
+                    "price": "8",
+                    "available": 1
+                },
+                {
+                    "title": "Scallop and Shrimp Ceviche Tostada",
+                    "description": "Scallops, shrimp, avocado, radish, cilantro & chili de arbol.",
+                    "price": "7",
+                    "available": 1
+                },
+                {
                     "title": "Chips & Salsa",
                     "description": null,
                     "price": "9",
+                    "available": 1
+                },
+                {
+                    "title": "Guacamole",
+                    "description": null,
+                    "price": "3",
                     "available": 1
                 },
                 {
@@ -62,9 +80,27 @@
                     "available": 0
                 },
                 {
+                    "title": "Octopus Cocktail",
+                    "description": "Octopus, avocado, cucumber, tomato & tortilla chips",
+                    "price": "8",
+                    "available": 1
+                },
+                {
+                    "title": "Scallop and Shrimp Ceviche Tostada",
+                    "description": "Scallops, shrimp, avocado, radish, cilantro & chili de arbol.",
+                    "price": "7",
+                    "available": 1
+                },
+                {
                     "title": "Chips & Salsa",
                     "description": null,
                     "price": "9",
+                    "available": 1
+                },
+                {
+                    "title": "Guacamole",
+                    "description": null,
+                    "price": "3",
                     "available": 1
                 },
                 {
@@ -146,9 +182,27 @@
                     "available": 0
                 },
                 {
+                    "title": "Octopus Cocktail",
+                    "description": "Octopus, avocado, cucumber, tomato & tortilla chips",
+                    "price": "8",
+                    "available": 1
+                },
+                {
+                    "title": "Scallop and Shrimp Ceviche Tostada",
+                    "description": "Scallops, shrimp, avocado, radish, cilantro & chili de arbol.",
+                    "price": "7",
+                    "available": 1
+                },
+                {
                     "title": "Chips & Salsa",
                     "description": null,
                     "price": "9",
+                    "available": 1
+                },
+                {
+                    "title": "Guacamole",
+                    "description": null,
+                    "price": "3",
                     "available": 1
                 },
                 {
@@ -255,9 +309,27 @@
                     "available": 0
                 },
                 {
+                    "title": "Octopus Cocktail",
+                    "description": "Octopus, avocado, cucumber, tomato & tortilla chips",
+                    "price": "8",
+                    "available": 1
+                },
+                {
+                    "title": "Scallop and Shrimp Ceviche Tostada",
+                    "description": "Scallops, shrimp, avocado, radish, cilantro & chili de arbol.",
+                    "price": "7",
+                    "available": 1
+                },
+                {
                     "title": "Chips & Salsa",
                     "description": null,
                     "price": "9",
+                    "available": 1
+                },
+                {
+                    "title": "Guacamole",
+                    "description": null,
+                    "price": "3",
                     "available": 1
                 },
                 {
