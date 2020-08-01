@@ -1,6 +1,4 @@
 (() => {
-    const CONFIG_FILE_PATH = './config/menus.json';
-
 
     class MenuItemField {
 
@@ -264,6 +262,8 @@
     class Menu {
 
         constructor() {
+            this._configVersion = null;
+            this._menuId = null;
             this._menu = null;
             this._itemProgDelay = Menu.DEFAULT_PROGRESSION_DELAY;
             this._cntrEl = null;
@@ -285,6 +285,14 @@
 
         get otherCount() {
             return this._cntrEl.getAttribute(Menu.OTHER_COUNT_ATTR);
+        }
+
+        setConfigVersion(version) {
+            this._configVersion = version;
+        }
+
+        setMenuId(id) {
+            this._menuId = id;
         }
 
         setMenu(menu) {
@@ -318,21 +326,7 @@
             this._foodItemsTmpl = document.getElementById(Menu.FOOD_ITEMS_TMPL_ID).innerHTML;
             this._extraItemsTmpl = document.getElementById(Menu.EXTRA_ITEMS_TMPL_ID).innerHTML;
 
-            await this._getConfig();
-            await this._renderItems();
-
-            let itemCntrEls = document.getElementsByClassName(Menu.ITEMS_EL_CLASS);
-
-            Array.from(itemCntrEls).forEach((el) => {
-                this._itemCntrs.push(new MenuItemCntr(el));
-            });
-
-            this._itemCntrs.forEach((ic) => {
-                ic.init();
-                ic.show();
-            });
-
-            this.show();
+            await this._refresh();
         }
 
         restart() {
@@ -349,26 +343,26 @@
             this._startMenuProgressions();
         }
 
+        async _isConfigCurrent() {
+            let resps = await Promise.all([
+                (await fetch('api/config/version/')).text(),
+                (await fetch('api/config/menu/current/id/')).text()
+            ]);
+
+            return (this._configVersion === resps[0] && this._menuId === resps[1]);
+        }
+
         async _getConfig() {
             return new Promise(async (resolve, reject) => {
                 let config = null;
 
                 let onError = (msg) => {
                     alert(msg);
-                    reject(new Error(e));
+                    reject(new Error(msg));
                 }
 
-                let headers = new Headers();
-                headers.append('pragma', 'no-cache');
-                headers.append('cache-control', 'no-cache');
-
-                let init = {
-                    method: 'GET',
-                    headers: headers,
-                };
-
                 try {
-                    let resp = await fetch(CONFIG_FILE_PATH, init);
+                    let resp = await fetch('api/config/menu/current/');
                     config = await resp.json();
                 } catch(e) {
                     onError('Could not retrieve configuration.');
@@ -378,7 +372,7 @@
                     onError('Could not retrieve configuration.');
                 }
 
-                if (!('progressionDelay' in config) || !('menus' in config)) {
+                if (!('progressionDelay' in config) || !('menu' in config)) {
                     onError('Invalid configuration.');
                 }
 
@@ -386,28 +380,16 @@
                     onError('Progression delay not valid.');
                 }
 
-                if (!config.menus[config.currentMenuId]) {
-                    onError('Current menu id not valid.');
-                }
-
-                if (!(config.currentMenuId in config.menus)) {
-                    onError('Current menu id not valid.');
-                }
-
-                if (!config.menus[config.currentMenuId]) {
+                if (!('food' in config.menu) || !('other' in config.menu) || !Array.isArray(config.menu.other)) {
                     onError('Invalid menu configuration.');
                 }
 
-                let menu = (config.currentMenuId !== null && config.currentMenuId !== "" && config.menus && config.menus[config.currentMenuId]) ? config.menus[config.currentMenuId] : null;
-
-                if (!('food' in menu) || !('other' in menu) || !Array.isArray(menu.other)) {
-                    onError('Invalid menu configuration.');
-                }
-
+                this.setConfigVersion(config.version);
                 this.setItemProgressionDelay(config.progressionDelay);
-                this.setMenu(menu);
-                this.setHasFood((menu.food && Array.isArray(menu.food) && menu.food.length > 0));
-                this.setOtherCount(menu.other.length);
+                this.setMenuId(config.menuId);
+                this.setMenu(config.menu);
+                this.setHasFood((config.menu.food && Array.isArray(config.menu.food) && config.menu.food.length > 0));
+                this.setOtherCount(config.menu.other.length);
 
                 resolve();
             });
@@ -425,6 +407,25 @@
             }
         }
 
+        async _refresh() {
+            this.hide();
+            await this._getConfig();
+            await this._renderItems();
+
+            let itemCntrEls = document.getElementsByClassName(Menu.ITEMS_EL_CLASS);
+
+            Array.from(itemCntrEls).forEach((el) => {
+                this._itemCntrs.push(new MenuItemCntr(el));
+            });
+
+            this.show();
+
+            this._itemCntrs.forEach((ic) => {
+                ic.init();
+                ic.show();
+            });
+        }
+
         async _progressMenu() {
             let itemCntrs = this._itemCntrs.filter((ic) => !ic.areAllItemsVisible());
             await Promise.all(itemCntrs.map((ic) => ic.hide()));
@@ -439,7 +440,12 @@
                 }
 
                 try {
-                    await this._progressMenu();
+                    if (!(await this._isConfigCurrent())) {
+                        await this._refresh();
+                    } else {
+                        await this._progressMenu();
+                    }
+
                     setTimeout(progFunc, this._itemProgDelay);
                 } catch(e) {
                     console.log(e);
