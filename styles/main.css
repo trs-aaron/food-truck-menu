@@ -44,7 +44,11 @@ body {
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: #262626f1;
+    background-color: #262626e1;
+}
+
+.tam-menu_theme_light .tam-menu_overlay {
+    background-color: #d1d1d1f1;
 }
 
 .tam-menu_cntr {
@@ -189,6 +193,50 @@ body {
     opacity: 1;
 }
 
+.tam-menu_item_color-title {
+    color: #f7733d;
+}
+
+.tam-menu_item_color-primary {
+    color: #fcfcfc;
+}
+
+.tam-menu_item_color-secondary {
+    color: #acacac;
+}
+
+.tam-menu_theme_light .tam-menu_item_color-primary {
+    color: #404040;
+}
+
+.tam-menu_theme_light .tam-menu_item_color-secondary {
+    color: #5d777a;
+}
+
+.tam-menu_item[data-is-available="0"] .tam-menu_item_color-title {
+    color: #fcfcfc;
+}
+
+.tam-menu_item[data-is-available="0"] .tam-menu_item_color-primary {
+    color: #acacac;
+}
+
+.tam-menu_item[data-is-available="0"] .tam-menu_item_color-secondary {
+    color: #acacac;
+}
+
+.tam-menu_theme_light .tam-menu_item[data-is-available="0"] .tam-menu_item_color-title {
+    color: #808080;
+}
+
+.tam-menu_theme_light .tam-menu_item[data-is-available="0"] .tam-menu_item_color-primary {
+    color: #666666;
+}
+
+.tam-menu_theme_light .tam-menu_item[data-is-available="0"] .tam-menu_item_color-secondary {
+    color: #808080;
+}
+
 .tam-menu_food-item-cntr {
     display: grid;
     column-gap: 1rem;
@@ -208,7 +256,6 @@ body {
 .tam-menu_food-item_title {
     font-family: AmaticBold;
     font-size: 3rem;
-    color: #f7733d;
 }
 
 .tam-menu_item[data-is-available="0"] .tam-menu_food-item_title {
@@ -223,18 +270,12 @@ body {
     font-family: TrenchThin;
     font-size: 2rem;
     font-weight: 900;
-    color: #fcfcfc;
-}
-
-.tam-menu_item[data-is-available="0"] .tam-menu_food-item_desc {
-    color: #ACACAC;
 }
 
 .tam-menu_food-item_price {
     font-family: TrenchThin;
     font-size: 3rem;
     font-weight: 900;
-    color: #ACACAC;
     text-align: right;
 }
 
@@ -255,8 +296,8 @@ body {
     padding: 0 1rem;
     font-family: AmaticBold;
     font-size: 3.5rem;
-    color: #f7733d;
     text-align: right;
+    color: #f7733d;
     border-bottom: 0.2rem solid #f7733d;
 }
 
@@ -292,7 +333,6 @@ body {
     font-family: TrenchThin;
     font-size: 2rem;
     font-weight: 900;
-    color: #fcfcfc;
     text-align: right;
 }
 
@@ -301,7 +341,6 @@ body {
 }
 
 .tam-menu_item[data-is-available="0"] .tam-menu_extra-item_title {
-    color: #ACACAC;
     text-decoration: line-through;
     text-decoration-color: #f7733d;
     text-decoration-thickness: 0.1rem;
@@ -311,7 +350,6 @@ body {
     font-family: TrenchThin;
     font-size: 2rem;
     font-weight: 900;
-    color: #ACACAC;
     text-align: right;
 }
 

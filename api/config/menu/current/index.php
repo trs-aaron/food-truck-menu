@@ -10,12 +10,5 @@ $config = json_decode(file_get_contents($configUrl), true);
 $menus = $config['menus'];
 $currMenuId = $config['currentMenuId'];
 
-$menu = (object) [
-  'version' => $config['version'],
-  'progressionDelay' => $config['progressionDelay'],
-  'menuId' => $currMenuId,
-  'menu' => $menus[$currMenuId],
-];
-
-  echo json_encode($menu);
+echo json_encode($menus[$currMenuId]);
 ?>

@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Menu">
         <link rel="stylesheet" href="./styles/main.css">
-        <script src="./lib/mustache.min.js"></script>
-        <script src="./script/main.js"></script>
+        <script src="./lib/script/mustache/mustache.min.js"></script>
+        <script type="module" src="./script/main.js"></script>
     </head>
-    <body>
+    <body class="tam-menu_theme_dark">
         <div class="tam-menu_main">
             <div class="tam-menu_overlay"></div>
             <div id="tam-menu_cntr" class="tam-menu_cntr" data-is-visible="0" data-has-food="0" data-other-count="0">
@@ -23,12 +23,12 @@
             {{#items}}
             <div class="tam-menu_item tam-menu_food-item" data-is-visible="0" data-is-available="{{available}}">
                 <div>
-                    <div class="tam-menu_item_field tam-menu_food-item_title">{{title}}</div>
+                    <div class="tam-menu_item_field tam-menu_item_color-title tam-menu_food-item_title">{{title}}</div>
                     {{#description}}
-                    <div class="tam-menu_item_field tam-menu_food-item_desc">{{description}}</div>
+                    <div class="tam-menu_item_field tam-menu_item_color-primary tam-menu_food-item_desc">{{description}}</div>
                     {{/description}}
                 </div>
-                <div class="tam-menu_item_field tam-menu_food-item_price">${{price}}</div>
+                <div class="tam-menu_item_field tam-menu_item_color-secondary tam-menu_food-item_price">${{price}}</div>
             </div>
             {{/items}}
         </div>
@@ -41,8 +41,8 @@
                 <div class="tam-menu_items-cntr tam-menu_extra-items-cntr">
                     {{#items}}
                     <div class="tam-menu_item tam-menu_extra-item" data-is-visible="0" data-is-available="{{available}}">
-                        <div class="tam-menu_item_field tam-menu_extra-item_title">{{title}}</div>
-                        <div class="tam-menu_item_field tam-menu_extra-item_price">${{price}}</div>
+                        <div class="tam-menu_item_field tam-menu_item_color-primary tam-menu_extra-item_title">{{title}}</div>
+                        <div class="tam-menu_item_field tam-menu_item_color-secondary tam-menu_extra-item_price">${{price}}</div>
                     </div>
                     {{/items}}
                 </div>
