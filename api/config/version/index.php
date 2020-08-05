@@ -5,7 +5,9 @@ header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$configUrl = '../../../config/config.json';
-$config = json_decode(file_get_contents($configUrl));
-echo $config->version; 
+require_once(dirname(__FILE__).'/../../Util.php');
+
+$config = Util::get_config();
+$version = $config['version']; 
+echo $version;
 ?>

@@ -1,0 +1,199 @@
+
+/* Bootstrap & paper dashboard overrides */
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer; 
+}
+
+.nav-tabs {
+    font-size: 2.4rem !important;
+}
+
+/* Element styles */
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background-color: #f4f3ef;
+    font-size: 1.8rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+button {
+    font-size: 1.2rem !important;
+}
+
+input, textarea {
+    background-color: transparent;
+    border: none;
+    resize: none;
+}
+
+input:focus, textarea:focus {
+    background-color: #ffffff;
+}
+
+/* Tam generic classes */
+
+.tam-icon {
+    font-family: 'tam-icons' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.tam-icon-bttn {
+    font-family: 'tam-icons' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #e6e6e6;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tam-icon-bttn.dark {
+    color: #2f2f2f;
+}
+
+.tam-icon-bttn[data-enabled="1"] {
+    pointer-events: all;
+}
+
+.tam-icon-bttn[data-visible="1"] {
+    opacity: 1;
+}
+
+.tam-icon-bttn:hover {
+    color: #b3741a;
+}
+
+.tam-icon-bttn:active {
+    color: #e5c659;
+}
+
+.tam-icon_plus:before {
+    content: "\e900";
+}
+
+.tam-icon_plus-filled:before {
+    content: "\e901";
+}
+
+.tam-icon_minus:before {
+    content: "\e902";
+}
+
+.tam-icon_minus-filled:before {
+    content: "\e903";
+}
+
+.tam-admin_input[data-modified="true"] > input, .tam-admin_input[data-modified="true"] > textarea {
+    color: green !important;
+}
+
+.tam-admin_avail_groups {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+}
+
+.tam_admin_tab{
+    font-size: 3.2rem;
+}
+
+.tam-admin_avail_group {
+    margin: 2rem 4rem;
+}
+
+.tam-admin_avail_group-title {
+    width: 100%;
+    border-bottom: 1px solid;
+    margin-bottom: 2rem;
+}
+
+.tam-admin_avail_group-items {
+    padding-left: 1rem;
+}
+
+.tam-admin_avail_group-item {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin: 1.5rem 0;
+}
+
+.tam-admin_avail_group-item-title {
+    flex-grow: 1;
+}
+
+.tam-admin_avail_group-item-avail {
+    zoom: 1;
+}
+
+.tam-admin_menus_select > select {
+    font-size: 2rem;
+}
+
+.tam-admin_menus_card {
+    margin-left: 1rem;
+    padding: 2rem 4rem;
+}
+
+.tam-admin_menus_card > h4 {
+    margin-bottom: 1rem;
+}
+
+.tam-admin_menus_price > input {
+    font-size: 2.8rem;
+    text-align: right;
+}
+
+.tam-admin_menus_price > input::-webkit-inner-spin-button {
+    margin-left: 1rem;
+}
+
+
+.tam-admin_menus_food .tam-admin_menus_title {
+    width: 30%;
+}
+
+.tam-admin_menus_food .tam-admin_menus_desc {
+    width: 40%;
+}
+
+.tam-admin_menus_food .tam-admin_menus_price {
+    width: 12%;
+}
+
+.tam-admin_menus_food .tam-admin_menus_actions {
+    width: 18%;
+}
+
+.tam-admin_menus-other {
+
+}
+
+.tam-admin_menus_other .tam-admin_menus_title {
+    width: 70%;
+}
+
+.tam-admin_menus_other .tam-admin_menus_price {
+    width: 12%;
+}
+
+.tam-admin_menus_other .tam-admin_menus_actions {
+    width: 18%;
+}

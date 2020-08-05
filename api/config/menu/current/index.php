@@ -5,10 +5,11 @@ header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$configUrl = '../../../../config/config.json';
-$config = json_decode(file_get_contents($configUrl), true);
+require_once(dirname(__FILE__).'/../../../Util.php');
+
+$config = Util::get_config();
 $menus = $config['menus'];
 $currMenuId = $config['currentMenuId'];
-
-echo json_encode($menus[$currMenuId]);
+$currMenu = $menus[$currMenuId];
+echo json_encode($currMenu);
 ?>

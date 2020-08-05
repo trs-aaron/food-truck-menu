@@ -1,19 +1,29 @@
-import Item from './Item';
+import Item from './Item.js';
+import ValueField from './ValueField.js';
 
 
 class ItemGroup {
 
     constructor() {
-        this._title = null;
+        this._index = new ValueField();
+        this._title = new ValueField();
         this._items = [];
     }
 
+    get index() {
+        return this._index.value;
+    }
+
     get title() {
-        return this._title;
+        return this._title.value;
+    }
+
+    get titleModified() {
+        return this._title.modified;
     }
 
     get items() {
-        return this._items;
+        return this._items.map((i) => i);
     }
 
     get itemCnt() {
@@ -24,13 +34,39 @@ class ItemGroup {
         return this.itemCnt > 0;
     }
 
+    get modified() {
+        let itemsModifed = this._items.some((i) => i.modified);
+        return (itemsModifed || this._index.modified || this._title.modified);
+    }
+
+    set initialIndex(val) {
+        this._index = new ValueField(val);
+    }
+
+    set index(val) {
+        this._index.value = (val !== undefined && !isNaN(val)) ? val : null;
+    }
+
     set title(val) {
-        this._title = (val !== undefined) ? val : null;
+        this._title.value = (val !== undefined) ? val : null;
+    }
+
+    newItem() {
+        let item = new Item();
+        this._addItem(item);
+        return item;
+    }
+
+    _addItem(item) {
+        if (item) {
+            item.initialIndex = this._items.length;
+            this._items[item.index] = item;
+        }
     }
 
     toJSON() {
         return {
-            title: this._title,
+            title: this._title.value,
             items: this._items
         }
     }
@@ -42,11 +78,11 @@ class ItemGroup {
 
         let obj = new ItemGroup();
 
-        obj.title = json['title'];
+        obj._title = new ValueField(json['title']);
         obj._items = [];
 
         json.items.forEach((i) => {
-            obj._items.push(Item.fromJSON(i));
+            obj._addItem(Item.fromJSON(i));
         });
 
         return obj;

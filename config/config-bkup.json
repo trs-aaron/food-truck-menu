@@ -1,5 +1,5 @@
 {
-    "version": "20200815043631000",
+    "version": "20200813171036000",
     "progressionDelay": 10000,
     "currentMenuId": "tacos",
     "menus": {
@@ -67,7 +67,7 @@
                         {
                             "title": "Sprite",
                             "description": null,
-                            "price": 4.25,
+                            "price": 4,
                             "available": true
                         },
                         {
