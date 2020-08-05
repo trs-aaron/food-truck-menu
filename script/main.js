@@ -392,8 +392,8 @@ class Menu {
                 this.setItemProgressionDelay(progDelay);
                 this.setMenuId(currMenuId);
                 this.setMenu(currMenu);
-                this.setHasFood((currMenu.food && Array.isArray(currMenu.food) && currMenu.food.length > 0));
-                this.setOtherCount(currMenu.other.length);
+                this.setHasFood(currMenu.food.hasItems);
+                this.setOtherCount(currMenu.otherCnt);
 
                 resolve();
             }).catch((e) => {
@@ -404,11 +404,11 @@ class Menu {
 
     async _renderItems() {
         if (this._menu) {
-            if (this._menu.food && this._menu.food.length > 0) {
-                this._foodCntrEl.innerHTML = Mustache.render(this._foodItemsTmpl, { items: this._menu.food });
+            if (this._menu.food && this._menu.food.itemCnt > 0) {
+                this._foodCntrEl.innerHTML = Mustache.render(this._foodItemsTmpl, { items: this._menu.food.items });
             }
 
-            if (this._menu.other && this._menu.other.length > 0) {
+            if (this._menu.other && this._menu.otherCnt > 0) {
                 this._otherCntrEl.innerHTML = Mustache.render(this._extraItemsTmpl, { sections: this._menu.other });
             }
         }

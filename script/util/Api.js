@@ -1,3 +1,6 @@
+import Menu from '../model/Menu';
+
+
 class Api {
 
     static async getConfigVersion() {
@@ -17,7 +20,7 @@ class Api {
 
     static async getCurrentMenu() {
         let resp = await fetch(Api.CURR_MENU_PATH);
-        return resp.json();
+        return Menu.fromJSON(await resp.json());
     }
 
 }
