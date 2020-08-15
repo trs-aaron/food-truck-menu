@@ -1,19 +1,29 @@
 import Api from '../util/Api.js';
+import ItemGroup from '../model/ItemGroup.js';
 
 
 const app = angular.module('TamMenuAdmin', ['ui.bootstrap']);
 
 
 app.factory( 'init', ['$rootScope', async ($rootScope) => {
+    let funcs = {};
+
+    funcs.isCurrentMenu = (menu) => {
+        return (menu.id === $rootScope.currentMenuId);
+    };
+
+    $rootScope.funcs = { ...$rootScope.funcs, ...funcs };
+
     $rootScope.currentMenuId = await Api.getCurrentMenuId();
     $rootScope.menus = await Api.getMenus();
+    $rootScope.activeTabIndex = 0;
 }]);
 
 
 app.controller('Availability', ['$scope', 'init', ($scope, init) => {
+    let funcs = {};
     $scope.menuTitle = null;
     $scope.groups = []
-    $scope.funcs = {};
 
     const update = () => {
         $scope.menuTitle = null;
@@ -42,20 +52,23 @@ app.controller('Availability', ['$scope', 'init', ($scope, init) => {
         }
     }
 
-    $scope.funcs.reset = () => {
+    funcs.reset = () => {
         alert('reset');
     };
+
+    $scope.funcs = {...$scope.funcs, ...funcs};
 
     init.then(() => {
         $scope.$watch($scope.currentMenuId, update);
         update();
+        $scope.$apply();
     });
 }]);
 
 
 app.controller('Menus', ['$scope', 'init', ($scope, init) => {
+    let funcs = {};
     $scope.menu = null;
-    $scope.funcs = {};
     $scope.menuSelect = {
         selected: '',
         isOpen: false,
@@ -70,6 +83,7 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
             if (menus && $scope.menu.id in menus) {
                 $scope.menus[$scope.menu.id] = menus[$scope.menu.id];
                 $scope.menu = menus[$scope.menu.id];
+                $scope.$apply();
             } else {
                 $scope.menu = null;
             }
@@ -78,7 +92,7 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
         }
     };
 
-    $scope.funcs.save = async () => {
+    funcs.save = async () => {
         if ($scope.menu) {
             try {
                 await Api.saveMenu($scope.menu);
@@ -91,7 +105,7 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
         }
     };
 
-    $scope.funcs.setAsCurrent = async () => {
+    funcs.setAsCurrent = async () => {
         if ($scope.menuSelect.selected) {
             try {
                 await Api.setCurrentMenuId($scope.menuSelect.selected);
@@ -103,8 +117,56 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
         }
     };
 
-    $scope.funcs.new = () => {
+    funcs.new = () => {
         alert('new');
+    };
+
+    funcs.addOtherItemGroup = (itemGroup) => {
+        $scope.menu.newOtherItemGroup(itemGroup.index + 1);
+    };
+
+    funcs.removeOtherItemGroup = (itemGroup) => {
+        $scope.menu.removeOtherItemGroup(itemGroup);
+    };
+
+    funcs.moveOtherItemGroupUp = (itemGroup) => {
+        $scope.menu.moveOtherItemGroupUp(itemGroup);
+    };
+
+    funcs.moveOtherItemGroupDown = (itemGroup) => {
+        $scope.menu.moveOtherItemGroupDown(itemGroup);
+    };
+
+    funcs.isFirstOtherItemGroup = (itemGroup) => {
+        return $scope.menu.isFirstOtherItemGroup(itemGroup);
+    };
+
+    funcs.isLastOtherItemGroup = (itemGroup) => {
+        return $scope.menu.isLastOtherItemGroup(itemGroup);
+    };
+
+    funcs.addItem = (item, itemGroup) => {
+        itemGroup.newItem(item.index + 1);
+    };
+
+    funcs.removeItem = (item, itemGroup) => {
+        itemGroup.removeItem(item);
+    };
+
+    funcs.moveItemUp = (item, itemGroup) => {
+        itemGroup.moveItemUp(item);
+    };
+
+    funcs.moveItemDown = (item, itemGroup) => {
+        itemGroup.moveItemDown(item);
+    };
+
+    funcs.isFirstItem = (item, itemGroup) => {
+        return itemGroup.isFirstItem(item);
+    };
+
+    funcs.isLastItem = (item, itemGroup) => {
+        return itemGroup.isLastItem(item);
     };
 
     $scope.menuSelect.funcs.onToggleDropdown = ($event) => {
@@ -115,7 +177,9 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
 
     $scope.menuSelect.funcs.onChange = () => {
         $scope.menu = ($scope.menuSelect.selected && $scope.menuSelect.selected in $scope.menus) ? $scope.menus[$scope.menuSelect.selected] : null;
-    }
+    };
+
+    $scope.funcs = {...$scope.funcs, ...funcs};
 
     init.then(() => {
         if ($scope.menus) {

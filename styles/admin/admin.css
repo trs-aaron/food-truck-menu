@@ -1,11 +1,26 @@
-
 /* Bootstrap & paper dashboard overrides */
 .nav, .pagination, .carousel, .panel-title a {
     cursor: pointer; 
 }
 
 .nav-tabs {
+    border-bottom-width: 2px;
+}
+
+.nav-tabs .nav-link, .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+    padding-left: 4rem;
+    padding-right: 4rem;
     font-size: 2.4rem !important;
+    border-left: 1px solid #51cbce;
+    border-top: 1px solid #51cbce;
+    border-right: 1px solid #51cbce;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.nav-tabs .nav-item.active > a {
+    background-color: #51cbce;
+    color: white;
 }
 
 /* Element styles */
@@ -35,69 +50,6 @@ input, textarea {
 
 input:focus, textarea:focus {
     background-color: #ffffff;
-}
-
-/* Tam generic classes */
-
-.tam-icon {
-    font-family: 'tam-icons' !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.tam-icon-bttn {
-    font-family: 'tam-icons' !important;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #e6e6e6;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.tam-icon-bttn.dark {
-    color: #2f2f2f;
-}
-
-.tam-icon-bttn[data-enabled="1"] {
-    pointer-events: all;
-}
-
-.tam-icon-bttn[data-visible="1"] {
-    opacity: 1;
-}
-
-.tam-icon-bttn:hover {
-    color: #b3741a;
-}
-
-.tam-icon-bttn:active {
-    color: #e5c659;
-}
-
-.tam-icon_plus:before {
-    content: "\e900";
-}
-
-.tam-icon_plus-filled:before {
-    content: "\e901";
-}
-
-.tam-icon_minus:before {
-    content: "\e902";
-}
-
-.tam-icon_minus-filled:before {
-    content: "\e903";
 }
 
 .tam-admin_input[data-modified="true"] > input, .tam-admin_input[data-modified="true"] > textarea {
@@ -147,13 +99,28 @@ input:focus, textarea:focus {
     font-size: 2rem;
 }
 
+option {
+    -webkit-appearance: none;
+}
+
+.tam-admin_menus_select > select > option[data-is-current="1"], .tam-admin_menus_select > select > option[data-is-current="true"] {
+    color: #51cbce;
+}
+
 .tam-admin_menus_card {
     margin-left: 1rem;
     padding: 2rem 4rem;
 }
 
-.tam-admin_menus_card > h4 {
+.tam-admin_menus_card-header {
+    display: flex;
+    flex-direction: row;
     margin-bottom: 1rem;
+}
+
+.tam-admin_menus_card-header-title {
+    flex-grow: 1;
+    margin-right: 4rem;
 }
 
 .tam-admin_menus_price > input {
@@ -165,6 +132,25 @@ input:focus, textarea:focus {
     margin-left: 1rem;
 }
 
+.tam-admin_menus_actions-bttns {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-left: 1rem;
+}
+
+.tam-admin_menus_action-bttn {
+    display: block;
+    margin-left: 1rem;
+    font-size: 3rem;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-transform-style: preserve-3d;
+}
+
+.tam-admin_menus_action-bttn:first-of-type {
+    margin-left: 0;
+}
 
 .tam-admin_menus_food .tam-admin_menus_title {
     width: 30%;

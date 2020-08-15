@@ -52,8 +52,7 @@ class Api {
         };
 
         let resp = await fetch(Util.buildUrl(Api.SET_CURRENT_MENU_PATH), opts);
-        let version = await resp.text();
-        alert(version);
+        return await resp.text();
     }
 
     static async saveMenu(menu) {
@@ -67,7 +66,7 @@ class Api {
         };
 
         let resp = await fetch(Util.buildUrl(Api.SAVE_MENU_PATH), opts);
-        let version = await resp.text();
+        return await resp.text();
     }
 }
 

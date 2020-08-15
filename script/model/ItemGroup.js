@@ -8,6 +8,7 @@ class ItemGroup {
         this._index = new ValueField();
         this._title = new ValueField();
         this._items = [];
+        this._itemsArrayModifed = false;
     }
 
     get index() {
@@ -36,7 +37,7 @@ class ItemGroup {
 
     get modified() {
         let itemsModifed = this._items.some((i) => i.modified);
-        return (itemsModifed || this._index.modified || this._title.modified);
+        return (itemsModifed || this._index.modified || this._title.modified || this._itemsArrayModifed);
     }
 
     set initialIndex(val) {
@@ -51,17 +52,63 @@ class ItemGroup {
         this._title.value = (val !== undefined) ? val : null;
     }
 
-    newItem() {
+    isFirstItem(item) {
+        return (item.index === 0);
+    }
+
+    isLastItem(item) {
+        return (item.index >= (this._items.length - 1));
+    }
+
+    newItem(index=null) {
         let item = new Item();
-        this._addItem(item);
+        this._addItem(item, index);
+        this._onItemsArrayModified();
         return item;
     }
 
-    _addItem(item) {
-        if (item) {
-            item.initialIndex = this._items.length;
-            this._items[item.index] = item;
+    removeItem(item) {
+        this._items.splice(item.index, 1);
+        this._onItemsArrayModified();
+    }
+
+    moveItemUp(item) {
+        if (item.index > 0) {
+            let origIndex = item.index;
+            let newIndex = origIndex - 1;
+            this._items[origIndex] = this._items[newIndex];
+            this._items[newIndex] = item;
+            this._resetIndexes();
         }
+    }
+
+    moveItemDown(item) {
+        if (item.index < (this._items.length - 1)) {
+            let origIndex = item.index;
+            let newIndex = origIndex + 1;
+            this._items[origIndex] = this._items[newIndex];
+            this._items[newIndex] = item;
+            this._resetIndexes();
+        }
+    }
+
+    _addItem(item, index=null) {
+        if (item) {
+            index = (index && !isNaN(index)) ? index : this._items.length;
+            item.initialIndex = index;
+            this._items.splice(index, 0, item);
+        }
+    }
+
+    _resetIndexes() {
+        this._items.forEach((item, i) => {
+            item.index = i;
+        });
+    }
+
+    _onItemsArrayModified() {
+        this._itemsArrayModified = true;
+        this._resetIndexes();
     }
 
     toJSON() {

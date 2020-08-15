@@ -1,16 +1,21 @@
 <!doctype html>
 <html ng-app="TamMenuAdmin">
     <head>
+        <title>Menu Admin</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="Menu Admin">
         <link rel="stylesheet" href="../lib/styles/bootstrap_4_5/bootstrap.min.css">
         <link rel="stylesheet" href="../lib/styles/paper-dashboard/paper-dashboard.css">
+        <link rel="stylesheet" href="../styles/tam-icons.css">
         <link rel="stylesheet" href="../styles/admin/admin.css">
         <script src="../lib/script/angular_1_8/angular.min.js"></script>
         <script src="../lib/script/ui-bootstrap_2_5/ui-bootstrap.min.js"></script>
     </head>
     <body>
         <div class="container p-3">
-          <uib-tabset active="active">
-            <uib-tab index="0" heading="Availability" active="true" class="tam_admin_tab">
+          <uib-tabset active="0">
+            <uib-tab index="0" heading="Availability" class="tam_admin_tab">
               <div ng-controller="Availability" class="container">
                 <div class="row align-items-center my-3">
                   <div class="col-10">
@@ -27,9 +32,9 @@
                       <div class="tam-admin_avail_group-items">
                         <div ng-repeat="item in group.items" class="tam-admin_avail_group-item">
                           <div class="tam-admin_avail_group-item-title">{{item.title}}</div>
-                          <div class="custom-control custom-switch align-middle tam-admin_avail_group-item-avail">
+                          <div class="custom-control custom-switch align-middle tam-admin_avail_group-item-avail" ng-model="item.available">
                             <input type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label" for="customSwitches"></label>
+                            <label class="custom-control-label">available</label>
                           </div>
                         </div>
                       </div>
@@ -44,7 +49,7 @@
                   <div class="col-4">
                     <div class="tam-admin_menus_select">
                       <select class="form-control" ng-model="menuSelect.selected" ng-change="menuSelect.funcs.onChange()">
-                        <option ng-repeat="menu in menuSelect.opts" value="{{menu.id}}">{{menu.name}}</option>
+                        <option ng-repeat="menu in menuSelect.opts" data-is-current="{{funcs.isCurrentMenu(menu)}}" value="{{menu.id}}">{{menu.name}}</option>
                       </select>
                     </div>
                   </div>
@@ -64,7 +69,9 @@
                 </div>
                 <div class="row my-3">
                   <div class="col card tam-admin_menus_card tam-admin_menus_food">
-                    <h4>Food</h4>
+                    <div class="tam-admin_menus_card-header">
+                      <h4 class="tam-admin_menus_card-header-title">Food</h4>
+                    </div>
                     <table class="table table-striped">
                       <colgroup>
                         <col span="1" class="tam-admin_menus_title">
@@ -83,17 +90,21 @@
                       <tbody>
                         <tr ng-repeat="item in menu.food.items">
                           <td class="align-top tam-admin_input tam-admin_menus_title" data-modified="{{item.titleModified}}">
-                            <input type="text" class="w-100" ng-model="item.title">
+                            <input type="text" class="w-100" placeholder="&lt;item title&gt;" ng-model="item.title">
                           </td>
                           <td class="align-top tam-admin_input tam-admin_menus_desc" data-modified="{{item.descriptionModified}}">
-                            <textarea class="w-100" rows="3" ng-model="item.description"></textarea>
+                            <textarea class="w-100" rows="3" placeholder="&lt;item description&gt;" ng-model="item.description"></textarea>
                           </td>
                           <td class="align-top tam-admin_input tam-admin_menus_price" data-modified="{{item.priceModified}}">
                             <input type="number" class="w-100" step="0.25" ng-model="item.price">
                           </td>
-                          <td class="tam-admin_menus_actions">
-                            <i class="glyphicon glyphicon-plus-sign tam-admin_menus_item_remove-bttn" data-enabled="1" data-visible="1"></i>
-                            <i class="glyphicon glyphicon-plus-sign tam-admin_menus_item_add-bttn" data-enabled="1" data-visible="1"></i>
+                          <td class="align-top tam-admin_menus_actions">
+                            <div class="tam-admin_menus_actions-bttns">
+                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-up dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isFirstItem(item, menu.food)}}" data-visible="true" ng-click="funcs.moveItemUp(item, menu.food)"></i>
+                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-down dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isLastItem(item, menu.food)}}" data-visible="true" ng-click="funcs.moveItemDown(item, menu.food)"></i>
+                              <i class="tam-icon-bttn tam-icon-bttn_danger tam-icon_minus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeItem(item, menu.food)"></i>
+                              <i class="tam-icon-bttn tam-icon-bttn_success tam-icon_plus tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addItem(item, menu.food)"></i>
+                            </div>
                           </td>
                         </tr>
                       </tbody>
@@ -102,7 +113,15 @@
                 </div>
                 <div ng-repeat="other in menu.other" class="row my-3">
                   <div class="col card tam-admin_menus_card tam-admin_menus_other">
-                    <h4 class="tam-admin_input" data-modified="{{other.titleModified}}"><input type="text" class="w-100" ng-model="other.title"></h4>
+                    <div class="tam-admin_menus_card-header">
+                      <h4 class="tam-admin_input tam-admin_menus_card-header-title data-modified="{{other.titleModified}}"><input type="text" class="w-100" placeholder="&lt;item group title&gt;" ng-model="other.title"></h4>
+                      <div class="tam-admin_menus_actions-bttns tam-admin_menus_card-header-actions">
+                        <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-up dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isFirstOtherItemGroup(other)}}" data-visible="true" ng-click="funcs.moveOtherItemGroupUp(other)"></i>
+                        <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-down dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isLastOtherItemGroup(other)}}" data-visible="true" ng-click="funcs.moveOtherItemGroupDown(other)"></i>
+                        <i class="tam-icon-bttn tam-icon-bttn_danger tam-icon_minus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeOtherItemGroup(other)"></i>
+                        <i class="tam-icon-bttn tam-icon-bttn_success tam-icon_plus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addOtherItemGroup(other)"></i>
+                    </div>
+                    </div>
                     <table class="table table-striped">
                       <colgroup>
                         <col span="1" class="tam-admin_menus_title">
@@ -119,14 +138,18 @@
                       <tbody>
                         <tr ng-repeat="item in other.items">
                           <td class="align-top tam-admin_input tam-admin_menus_title" data-modified="{{item.titleModified}}">
-                            <input type="text" class="w-100" ng-model="item.title">
+                            <input type="text" class="w-100" placeholder="&lt;item title&gt;" ng-model="item.title">
                           </td>
                           <td class="align-top tam-admin_input tam-admin_menus_price" data-modified="{{item.priceModified}}">
                             <input type="number" class="w-100" step="0.25" ng-model="item.price">
                           </td>
                           <td class="tam-admin_menus_actions">
-                            <i class="glyphicon glyphicon-plus-sign tam-admin_menus_item_remove-bttn" data-enabled="1" data-visible="1"></i>
-                            <i class="glyphicon glyphicon-plus-sign tam-admin_menus_item_add-bttn" data-enabled="1" data-visible="1"></i>
+                            <div class="tam-admin_menus_actions-bttns">
+                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-up dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isFirstItem(item, other)}}" data-visible="true" ng-click="funcs.moveItemUp(item, other)"></i>
+                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-down dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isLastItem(item, other)}}" data-visible="true" ng-click="funcs.moveItemDown(item, other)"></i>
+                              <i class="tam-icon-bttn tam-icon-bttn_danger tam-icon_minus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeItem(item, other)"></i>
+                              <i class="tam-icon-bttn tam-icon-bttn_success tam-icon_plus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addItem(item, other)"></i>
+                            </div>
                           </td>
                         </tr>
                       </tbody>
