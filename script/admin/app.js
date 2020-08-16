@@ -1,15 +1,82 @@
 import Api from '../util/Api.js';
-import ItemGroup from '../model/ItemGroup.js';
+import Menu from '../model/Menu.js';
+import Util from '../util/Util.js';
+import PLACEHOLDER from './PLACEHOLDER.js';
+import STRING from './STRING.js';
 
 
 const app = angular.module('TamMenuAdmin', ['ui.bootstrap']);
 
 
-app.factory( 'init', ['$rootScope', async ($rootScope) => {
+app.factory( 'init', ['$rootScope', '$uibModal', async ($rootScope, $uibModal) => {
     let funcs = {};
 
     funcs.isCurrentMenu = (menu) => {
         return (menu.id === $rootScope.currentMenuId);
+    };
+
+    funcs.refreshMenu = async (menuId) => {
+        let menu = null;
+        let menus = await Api.getMenus();
+
+        if (menus && menuId in menus) {
+            menu = menus[menuId];
+            $rootScope.menus[menuId] = menu;
+        }
+
+        return menu;
+    }
+
+    funcs.openAlertModal = (title, message) => {
+        $uibModal.open({
+            animation: false,
+            component: 'alertModalCpnt',
+            resolve: {
+                title: () => title,
+                message: () => message
+            }
+        });
+    };
+
+    funcs.openConfirmationModal = (title, message, onResult) => {
+        let modal = $uibModal.open({
+            animation: false,
+            component: 'confirmationModalCpnt',
+            resolve: {
+                title: () => title,
+                message: () => message
+            }
+        });
+
+        let handleResult = (result) => {
+            if (onResult) {
+                onResult(result);
+            }
+        };
+
+        modal.result.then(handleResult, null);
+    };
+
+    funcs.openNewMenuModal = (onCreate, onDismiss) => {
+        let modal = $uibModal.open({
+            animation: false,
+            component: 'newMenuModalCpnt',
+            resolve: {}
+        });
+
+        let handleCreate = (results) => {
+            if (onCreate) {
+                onCreate(results.menuName, results.menuTitle);
+            }
+        };
+
+        let handleDismiss = () => {
+            if (onDismiss) {
+                onDismiss();
+            }
+        };
+
+        modal.result.then(handleCreate, handleDismiss);
     };
 
     $rootScope.funcs = { ...$rootScope.funcs, ...funcs };
@@ -23,38 +90,61 @@ app.factory( 'init', ['$rootScope', async ($rootScope) => {
 app.controller('Availability', ['$scope', 'init', ($scope, init) => {
     let funcs = {};
     $scope.menuTitle = null;
-    $scope.groups = []
+    $scope.groups = [];
 
     const update = () => {
-        $scope.menuTitle = null;
-        $scope.groups = []
+        $scope.menu = ($scope.currentMenuId && $scope.menus && $scope.currentMenuId in $scope.menus) ? $scope.menus[$scope.currentMenuId] : null;
+        $scope.itemGroups = []
 
-        let currMenu = ($scope.currentMenuId && $scope.menus && $scope.currentMenuId in $scope.menus) ? $scope.menus[$scope.currentMenuId] : null;
-
-        if (currMenu) {
-            $scope.menuTitle = currMenu.title;
-
-            if (currMenu.food.items.length > 0) {
-                $scope.groups.push({
+        if ($scope.menu) {
+            if ($scope.menu.food.items.length > 0) {
+                $scope.itemGroups.push({
                     title: 'Food',
-                    items: currMenu.food.items.map((i) => i)
+                    items: $scope.menu.food.items.map((i) => i)
                 });
             }
 
-            currMenu.other.forEach((o) => {
-                if (o.items.length > 0) {
-                    $scope.groups.push({
-                        title: o.title,
-                        items: o.items.map((i) => i)
+            $scope.menu.other.forEach((ig) => {
+                if (ig.items.length > 0) {
+                    $scope.itemGroups.push({
+                        title: ig.title,
+                        items: ig.items.map((i) => i)
                     });
                 }
             });
         }
     }
 
-    funcs.reset = () => {
-        alert('reset');
+    const refreshMenu = async() => {
+        if ($scope.menu) {
+            $scope.menu = await $scope.funcs.refreshMenu($scope.menu.id);
+            update();
+        }
+    }
+
+    funcs.reset = async () => {
+        let onResult = async (result) => {
+            if (result === true) {
+                try {
+                    $scope.menu.setAllItemsAvailable();
+                    await Api.saveMenu($scope.menu);
+                    await refreshMenu();
+                } catch (e) {
+                    $scope.funcs.openAlertModal(STRING.resetAvail.error.title, STRING.resetAvail.error.message);
+                }
+            }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.resetAvail.confirmModal.title, STRING.resetAvail.confirmModal.message, onResult);
     };
+
+    funcs.onItemAvailableChange = async (item) => {
+        try {
+            await Api.saveMenu($scope.menu);
+        } catch(e) {
+            item.available = !item.available;
+        }
+    }
 
     $scope.funcs = {...$scope.funcs, ...funcs};
 
@@ -78,47 +168,126 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
 
     const refreshMenu = async () => {
         try {
-            let menus = await Api.getMenus();
-
-            if (menus && $scope.menu.id in menus) {
-                $scope.menus[$scope.menu.id] = menus[$scope.menu.id];
-                $scope.menu = menus[$scope.menu.id];
+            if ($scope.menu) {
+                $scope.menu = await $scope.funcs.refreshMenu($scope.menu.id);
                 $scope.$apply();
-            } else {
-                $scope.menu = null;
             }
         } catch(e) {
             $scope.menu = null;
         }
     };
 
-    funcs.save = async () => {
-        if ($scope.menu) {
-            try {
-                await Api.saveMenu($scope.menu);
-                await refreshMenu();
-            } catch(e) {
-                alert('Failed to save menu.');
-            }
+    const refreshMenuSelect = () => {
+        $scope.menuSelect.opts = Object.values($scope.menus).sort((m1, m2) => m1.name.localeCompare(m2.name));
 
-            await refreshMenu();
+        if (!$scope.menuSelect.selected && $scope.menuSelect.opts.length > 0) {
+            $scope.menuSelect.selected = ($scope.currentMenuId && $scope.currentMenuId in $scope.menus && $scope.menus[$scope.currentMenuId]) ? $scope.currentMenuId : $scope.menuSelect.opts[0].id;
         }
-    };
+
+        $scope.menu = $scope.menus[$scope.menuSelect.selected];
+    }
+
+    const addMenu = (menu) => {
+        if (menu) {
+            $scope.menus[menu.id] = menu;
+            $scope.menu = menu;
+            $scope.menuSelect.selected = menu.id;
+            refreshMenuSelect();
+        }
+    }
+
+    const removeMenu = (menu) => {
+        if (menu && menu.id in $scope.menus) {
+            delete $scope.menus[menu.id];
+            $scope.menuSelect.selected = null;
+            refreshMenuSelect();
+        }
+    }
 
     funcs.setAsCurrent = async () => {
-        if ($scope.menuSelect.selected) {
-            try {
-                await Api.setCurrentMenuId($scope.menuSelect.selected);
-            } catch(e) {
-                alert('Failed to set as current menu.');
+        let confirmMsg = STRING.setAsCurrent.confirmModal.message.replace(PLACEHOLDER.menuName, $scope.menuSelect.selected);
+        let errMsg = STRING.setAsCurrent.error.message.replace(PLACEHOLDER.menuName, $scope.menuSelect.selected);
+
+        let onResult = async (result) => {
+            if (result === true) {
+                if ($scope.menuSelect.selected) {
+                    try {
+                        await Api.setCurrentMenuId($scope.menuSelect.selected);
+                    } catch(e) {
+                        $scope.funcs.openAlertModal(STRING.setAsCurrent.error.title, errMsg);
+                    }
+                } else {
+                    $scope.funcs.openAlertModal(STRING.setAsCurrent.error.title, errMsg);
+                }
             }
-        } else {
-            alert('Failed to set as current menu.');
-        }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.setAsCurrent.confirmModal.title, confirmMsg, onResult);
+    };
+
+    funcs.save = async () => {
+        let confirmMsg = STRING.saveMenu.confirmModal.message.replace(PLACEHOLDER.menuName, $scope.menuSelect.selected);
+        let errMsg = STRING.saveMenu.error.message.replace(PLACEHOLDER.menuName, $scope.menuSelect.selected);
+
+        let onResult = async (result) => {
+            if (result === true) {
+                if ($scope.menu) {
+                    try {
+                        await Api.saveMenu($scope.menu);
+                        await refreshMenu();
+                    } catch(e) {
+                        $scope.funcs.openAlertModal(STRING.saveMenu.error.title, errMsg);
+                    }
+
+                    await refreshMenu();
+                }
+            }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.saveMenu.confirmModal.title, confirmMsg, onResult);
+    };
+
+    funcs.delete = async () => {
+        let confirmMsg = STRING.deleteMenu.confirmModal.message.replace(PLACEHOLDER.menuName, $scope.menuSelect.selected);
+        let errMsg = STRING.deleteMenu.error.message.replace(PLACEHOLDER.menuName, $scope.menuSelect.selected);
+
+        let onResult = async (result) => {
+            if (result === true) {
+                if ($scope.menu) {
+                    try {
+                        await Api.deleteMenu($scope.menu);
+                        removeMenu($scope.menu);
+                    } catch(e) {
+                        $scope.funcs.openAlertModal(STRING.deleteMenu.error.title, errMsg);
+                    }
+
+                    refreshMenuSelect();
+                }
+            }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.deleteMenu.confirmModal.title, confirmMsg, onResult);
     };
 
     funcs.new = () => {
-        alert('new');
+        let onResult = async (menuName, menuTitle) => {
+            if (menuName && menuName !== '') {
+                try {
+                    let id = Util.convertToSlug(menuName);
+                    let menu = Menu.build(id, menuName);
+
+                    await Api.saveMenu(menu);
+
+                    addMenu(menu);
+                } catch(e) {
+                    $scope.funcs.openAlertModal(STRING.newMenu.error.title, STRING.newMenu.error.message);
+                }
+            } else {
+                $scope.funcs.openAlertModal(STRING.newMenu.error.title, STRING.newMenu.error.message);
+            }
+        };
+
+        $scope.funcs.openNewMenuModal(onResult);
     };
 
     funcs.addOtherItemGroup = (itemGroup) => {
@@ -126,7 +295,26 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
     };
 
     funcs.removeOtherItemGroup = (itemGroup) => {
-        $scope.menu.removeOtherItemGroup(itemGroup);
+        let confirmMsg = STRING.removeOtherItemGroup.confirmModal.message.replace(PLACEHOLDER.itemGroupTitle, itemGroup.title);
+        let errMsg = STRING.removeOtherItemGroup.error.message.replace(PLACEHOLDER.itemGroupTitle, itemGroup.title);
+
+        let onResult = async (result) => {
+            if (result === true) {
+                if ($scope.menu) {
+                    try {
+                        $scope.menu.removeOtherItemGroup(itemGroup);
+                    } catch(e) {
+                        $scope.funcs.openAlertModal(STRING.removeOtherItemGroup.error.title, errMsg);
+                    }
+
+                    refreshMenuSelect();
+                } else {
+                    $scope.funcs.openAlertModal(STRING.removeOtherItemGroup.error.title, errMsg);
+                }
+            }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.removeOtherItemGroup.confirmModal.title, confirmMsg, onResult);
     };
 
     funcs.moveOtherItemGroupUp = (itemGroup) => {
@@ -150,7 +338,26 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
     };
 
     funcs.removeItem = (item, itemGroup) => {
-        itemGroup.removeItem(item);
+        let confirmMsg = STRING.removeItem.confirmModal.message.replace(PLACEHOLDER.itemTitle, item.title);
+        let errMsg = STRING.removeItem.error.message.replace(PLACEHOLDER.itemTitle, item.title);
+
+        let onResult = async (result) => {
+            if (result === true) {
+                if (itemGroup) {
+                    try {
+                        itemGroup.removeItem(item);
+                    } catch(e) {
+                        $scope.funcs.openAlertModal(STRING.removeItem.error.title, errMsg);
+                    }
+
+                    refreshMenuSelect();
+                } else {
+                    $scope.funcs.openAlertModal(STRING.removeItem.error.title, errMsg);
+                }
+            }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.removeItem.confirmModal.title, confirmMsg, onResult);
     };
 
     funcs.moveItemUp = (item, itemGroup) => {
@@ -184,20 +391,101 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
     init.then(() => {
         if ($scope.menus) {
             if ($scope.currentMenuId && $scope.currentMenuId in $scope.menus && $scope.menus[$scope.currentMenuId]) {
-                $scope.menuSelect.selected = $scope.currentMenuId;
-                $scope.menuSelect.opts.push($scope.menus[$scope.currentMenuId]);
                 $scope.menu = $scope.menus[$scope.currentMenuId];
             }
 
-            Object.keys($scope.menus).forEach((mId) => {
-                if (mId !== $scope.currentMenuId && mId in $scope.menus && $scope.menus[mId]) {
-                    $scope.menuSelect.opts.push($scope.menus[mId]);
-                }
-            });
-
-            if (!$scope.menuSelect.selected && $scope.menuSelect.opts.length > 0) {
-                $scope.menuSelect.selected = $scope.menuSelect.opts[0].id;
-            }
+            refreshMenuSelect();
         }
     });
 }]);
+
+
+app.component('alertModalCpnt', {
+    templateUrl: 'alertModal.html',
+    bindings: {
+        resolve: '<',
+        close: '&'
+    },
+    controller: function AlertModalCtrl($scope, $element, $attrs) {
+        this.$onInit = () => {
+            $scope.title = this.resolve.title;
+            $scope.message = this.resolve.message;
+        };
+
+        this.ok = () => {
+            this.close();
+        };
+    }
+});
+
+
+app.component('confirmationModalCpnt', {
+    templateUrl: 'confirmationModal.html',
+    bindings: {
+        resolve: '<',
+        close: '&'
+    },
+    controller: function ConfirmationModalCtrl($scope, $element, $attrs) {
+        this.$onInit = () => {
+            $scope.title = this.resolve.title;
+            $scope.message = this.resolve.message;
+        };
+
+        this.yes = () => {
+            this.close({ $value: true });
+        };
+
+        this.no = () => {
+            this.close({ $value: false });
+        };
+    }
+});
+
+app.component('newMenuModalCpnt', {
+    templateUrl: 'newMenuModal.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    controller: function NewMenuModalCtrl($scope, $element, $attrs) {
+        let validate = () => {
+            $scope.menuNameInvalidReason = null;
+            $scope.isCreateBttnEnabled = true;
+            $scope.isMenuNameInvalid = false;
+
+            if (!$scope.menuName || $scope.menuName === '') {
+                $scope.isCreateBttnEnabled = false;
+                return;
+            }
+
+            if ($scope.currMenuIds.includes(Util.convertToSlug($scope.menuName))) {
+                $scope.isCreateBttnEnabled = false;
+                $scope.isMenuNameInvalid = true;
+                $scope.menuNameInvalidReason = STRING.newMenu.nameInvalid.duplicate;
+                return;
+            }
+        }
+
+        this.$onInit = () => {
+            $scope.isCreateBttnEnabled = false;
+            $scope.menuName = null;
+            $scope.isMenuNameUnique = true;
+            $scope.currMenuIds = Object.values($scope.$root.menus).map((m) => m.id);
+            $scope.$watch('menuName', () => { validate(); });
+            validate();
+        };
+
+        this.create = () => {
+            this.close({
+                $value: {
+                    menuName: $scope.menuName
+                }
+            });
+        };
+
+        this.cancel = () => {
+            this.dismiss();
+        };
+    }
+});

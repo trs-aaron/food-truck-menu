@@ -1,12 +1,12 @@
 import ItemGroup from './ItemGroup.js';
 import ValueField from './ValueField.js';
+import Item from './Item.js';
 
 class Menu {
 
     constructor() {
         this._id = new ValueField();
         this._name = new ValueField();
-        this._title = new ValueField();
         this._food = null;
         this._other = [];
         this._otherArrayModified = false;
@@ -18,10 +18,6 @@ class Menu {
 
     get name() {
         return this._name.value;
-    }
-
-    get title() {
-        return this._title.value;
     }
 
     get food() {
@@ -38,7 +34,7 @@ class Menu {
 
     get modified() {
         let otherItemGroupsModifed = this._other.some((ig) => ig.modified);
-        return (otherItemGroupsModifed || this._id.modified || this._name.modified || this._title.modified || this._food.modified || this._otherArrayModified);
+        return (otherItemGroupsModifed || this._id.modified || this._name.modified || this._food.modified || this._otherArrayModified);
     }
 
     set id(val) {
@@ -47,10 +43,6 @@ class Menu {
 
     set name(val) {
         this._name.value = (val !== undefined) ? val : null;
-    }
-
-    set title(val) {
-        this._title.value = (val !== undefined) ? val : null;
     }
 
     set food(val) {
@@ -66,8 +58,7 @@ class Menu {
     }
 
     newOtherItemGroup(index=null) {
-        let group = new ItemGroup();
-        group.newItem();
+        let group = ItemGroup.build();
         this._addOtherItemGroup(group, index);
         this._onOtherArrayModified();
         return group;
@@ -98,6 +89,12 @@ class Menu {
         }
     }
 
+    setAllItemsAvailable() {
+        this._food.setAllItemsAvailable();
+        this._other.forEach((ig) => { ig.setAllItemsAvailable(); });
+    }
+
+
     _addOtherItemGroup(itemGroup, index=null) {
         if (itemGroup) {
             index = (index && !isNaN(index)) ? index : this._other.length;
@@ -121,14 +118,13 @@ class Menu {
         return {
             id: this._id.value,
             name: this._name.value,
-            title: this._title.value,
             food: this._food,
-            other: this._other
+            other: this._other.filter(ig => ig.hasItems)
         }
     }
 
     static fromJSON(json) {
-        if (!json || !('id' in json) || !('name' in json) || !('title' in json) || !('food' in json) || !('other' in json) || !Array.isArray(json.other)) {
+        if (!json || !('id' in json) || !('name' in json) || !('food' in json) || !('other' in json) || !Array.isArray(json.other)) {
             throw new Error('[Item] Invalid JSON');
         }
 
@@ -136,13 +132,31 @@ class Menu {
 
         obj._id = new ValueField(json['id']);
         obj._name = new ValueField(json['name']);
-        obj._title = new ValueField(json['title']);
-        obj._food = (json['food']) ? ItemGroup.fromJSON(json['food']) : null;
+        obj._food = (json['food']) ? ItemGroup.fromJSON(json['food']) : ItemGroup.build();
         obj._other = [];
+
+        if (!obj._food.hasItems) {
+            obj._food.newItem();
+        }
 
         json.other.forEach((ig) => {
             obj._addOtherItemGroup(ItemGroup.fromJSON(ig));
         });
+
+        if (obj.otherCnt === 0) {
+            obj.newOtherItemGroup();
+        }
+
+        return obj;
+    }
+
+    static build(id, name) {
+        let obj = new Menu();
+
+        obj._id = new ValueField(id);
+        obj._name = new ValueField(name);
+        obj._food = ItemGroup.build();
+        obj.newOtherItemGroup();
 
         return obj;
     }

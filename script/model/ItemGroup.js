@@ -28,11 +28,16 @@ class ItemGroup {
     }
 
     get itemCnt() {
-        return this._items.length;
+        return this._items.filter(i => !i.isEmpty).length;
     }
 
     get hasItems() {
         return this.itemCnt > 0;
+    }
+
+    get isEmpty() {
+        let hasTitle = (this.title && this.title !== '') ? true : false;
+        return (!hasTitle && !this.hasItems);
     }
 
     get modified() {
@@ -92,6 +97,10 @@ class ItemGroup {
         }
     }
 
+    setAllItemsAvailable() {
+        this._items.forEach((i) => { i.available = true; });
+    }
+
     _addItem(item, index=null) {
         if (item) {
             index = (index && !isNaN(index)) ? index : this._items.length;
@@ -114,7 +123,7 @@ class ItemGroup {
     toJSON() {
         return {
             title: this._title.value,
-            items: this._items
+            items: this._items.filter(i => !i.isEmpty)
         }
     }
 
@@ -131,6 +140,15 @@ class ItemGroup {
         json.items.forEach((i) => {
             obj._addItem(Item.fromJSON(i));
         });
+
+        return obj;
+    }
+
+    static build(title=null) {
+        let obj = new ItemGroup();
+
+        obj._title = new ValueField(title);
+        obj.newItem();
 
         return obj;
     }

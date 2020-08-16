@@ -5,7 +5,7 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-require_once(dirname(__FILE__).'/../../../../Util.php');
+require_once(dirname(__FILE__).'/../../../Util.php');
 
 try {
     $rawPostBody = file_get_contents('php://input');
@@ -14,12 +14,16 @@ try {
     if (isset($postData['menuId'])) {
         $menuId = $postData['menuId'];
         $config = Util::get_config();
-        $config['currentMenuId'] = $menuId;
+
+        if (isset($config['menus'][$menuId])) {
+            unset($config['menus'][$menuId]);
+        }
+        
         $version = Util::save_config($config);
         echo $version;
     } else {
         http_response_code(400);
-        echo 'Menu not in POST body.';
+        echo 'Menu Id not in POST body.';
     }
 }
 catch (exception $e) {

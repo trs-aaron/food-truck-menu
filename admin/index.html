@@ -20,7 +20,7 @@
               <div ng-controller="Availability" class="container">
                 <div class="row align-items-center my-3">
                   <div class="col-10">
-                    <h4 class="text-muted">{{menuTitle}}</h4>
+                    <h4 class="text-muted">{{menu.name}}</h4>
                   </div>
                   <div class="col">
                     <button type="button" class="btn btn-primary btn-md btn-block" ng-model="singleModel" ng-click="funcs.reset()">Reset</button>
@@ -28,15 +28,15 @@
                 </div>
                 <div class="row my-3">
                   <div class="col card tam-admin_avail_groups">
-                    <div ng-repeat="group in groups" class="tam-admin_avail_group">
-                      <h5 class="tam-admin_avail_group-title">{{group.title}}</h5>
+                    <div ng-repeat="itemGroup in itemGroups" class="tam-admin_avail_group">
+                      <h5 class="tam-admin_avail_group-title">{{itemGroup.title}}</h5>
                       <div class="tam-admin_avail_group-items">
-                        <div ng-repeat="item in group.items" class="tam-admin_avail_group-item">
+                        <div ng-repeat="item in itemGroup.items" class="tam-admin_avail_group-item">
                           <div class="tam-admin_avail_group-item-title">{{item.title}}</div>
-                          <div class="custom-control custom-switch align-middle tam-admin_avail_group-item-avail" ng-model="item.available">
-                            <input type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label">available</label>
-                          </div>
+                          <label class="tam-admin_switch">
+                            <input type="checkbox" ng-model="item.available" ng-change="funcs.onItemAvailableChange()">
+                            <span class="tam-admin_switch-slider"></span>
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -50,22 +50,22 @@
                   <div class="col-4">
                     <div class="tam-admin_menus_select">
                       <select class="form-control" ng-model="menuSelect.selected" ng-change="menuSelect.funcs.onChange()">
-                        <option ng-repeat="menu in menuSelect.opts" data-is-current="{{funcs.isCurrentMenu(menu)}}" value="{{menu.id}}">{{menu.name}}</option>
+                        <option ng-repeat="menu in menuSelect.opts" data-is-modified="{{menu.modified}}" value="{{menu.id}}">{{menu.name}}</option>
                       </select>
                     </div>
                   </div>
                   <div class="col">
-                    <button type="button" class="btn btn-primary btn-md btn-block" ng-model="singleModel" ng-click="funcs.save()" ng-disabled="!menu.modified">Save Menu</button>
+                    <button type="button" class="btn btn-primary btn-md btn-block" ng-click="funcs.save()" ng-disabled="!menu.modified">Save Menu</button>
                   </button>
                   </div>
                   <div class="col">
-                    <button type="button" class="btn btn-primary btn-md btn-block" ng-model="singleModel" ng-click="funcs.setAsCurrent()">Set as Current</button>
+                    <button type="button" class="btn btn-primary btn-md btn-block" ng-click="funcs.setAsCurrent()">Set as Current</button>
                   </div>
                   <div class="col">
-                    <button type="button" class="btn btn-danger btn-md btn-block" ng-model="singleModel" ng-click="funcs.delete()">Delete Menu</button>
+                    <button type="button" class="btn btn-danger btn-md btn-block" ng-click="funcs.delete()">Delete Menu</button>
                   </div>
                   <div class="col">
-                    <button type="button" class="btn btn-success btn-md btn-block" ng-model="singleModel" ng-click="funcs.new()">New Menu</button>
+                    <button type="button" class="btn btn-success btn-md btn-block" ng-click="funcs.new()">New Menu</button>
                   </div>
                 </div>
                 <div class="row my-3">
@@ -163,6 +163,59 @@
             </uib-tab>
           </uib-tabset>
         </div>
+        <script type="text/ng-template" id="alertModal.html">
+          <div class="modal-header tam-admin_modal-header">
+              <h6 class="modal-title" id="modal-title">{{title}}</h6>
+          </div>
+          <div class="modal-body tam-admin_modal-body" id="modal-body">{{message}}</div>
+          <div class="modal-footer tam-admin_modal-fotter">
+            <div class="row span2">
+              <div class="col">
+                <button class="btn btn-primary btn-lg btn-block" type="button" ng-click="$ctrl.ok()">Ok</button>
+              </div>
+            </div>
+          </div>
+        </script>
+        <script type="text/ng-template" id="confirmationModal.html">
+          <div class="modal-header tam-admin_modal-header">
+              <h6 class="modal-title" id="modal-title">{{title}}</h6>
+          </div>
+          <div class="modal-body tam-admin_modal-body" id="modal-body">{{message}}</div>
+          <div class="modal-footer tam-admin_modal-fotter">
+            <div class="row span2">
+              <div class="col">
+                <button class="btn btn-primary btn-lg btn-block" type="button" ng-click="$ctrl.yes()">Yes</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-warning btn-lg btn-block" type="button" ng-click="$ctrl.no()">No</button>
+              </div>
+            </div>
+          </div>
+        </script>
+        <script type="text/ng-template" id="newMenuModal.html">
+          <div class="modal-header tam-admin_modal-header">
+              <h6 class="modal-title" id="modal-title">Create New Menu</h6>
+          </div>
+          <div class="modal-body tam-admin_modal-body" id="modal-body">
+            <form class="form-vertical">
+              <div class="form-group tam-admin_modal-input">
+                <label for="menuName">Menu Name</label>
+                <input id="menuName" type="text" autocomplete="off" class="form-control {{menuNameInputClasses}}" ng-model="menuName" ng-class="{'is-invalid': isMenuNameInvalid}">
+                <div ng-if="isMenuNameInvalid" class="col text-danger">Menu name already exists.</div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer tam-admin_modal-fotter">
+            <div class="row span2">
+              <div class="col">
+                <button class="btn btn-primary btn-lg btn-block" type="button" ng-click="$ctrl.create()" ng-disabled="!isCreateBttnEnabled">Create</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-warning btn-lg btn-block" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </script>
         <script type="module" src="../script/admin/app.js"></script>
     </body>
 </html>

@@ -213,27 +213,27 @@ body {
     color: #5d777a;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_item_color-title {
+.tam-menu_item[data-is-available="false"] .tam-menu_item_color-title{
     color: #fcfcfc;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_item_color-primary {
+.tam-menu_item[data-is-available="false"] .tam-menu_item_color-primary {
     color: #acacac;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_item_color-secondary {
+.tam-menu_item[data-is-available="false"] .tam-menu_item_color-secondary {
     color: #acacac;
 }
 
-.tam-menu_theme_light .tam-menu_item[data-is-available="0"] .tam-menu_item_color-title {
+.tam-menu_theme_light .tam-menu_item[data-is-available="false"] .tam-menu_item_color-title {
     color: #808080;
 }
 
-.tam-menu_theme_light .tam-menu_item[data-is-available="0"] .tam-menu_item_color-primary {
+.tam-menu_theme_light .tam-menu_item[data-is-available="false"] .tam-menu_item_color-primary {
     color: #666666;
 }
 
-.tam-menu_theme_light .tam-menu_item[data-is-available="0"] .tam-menu_item_color-secondary {
+.tam-menu_theme_light .tam-menu_item[data-is-available="false"] .tam-menu_item_color-secondary {
     color: #808080;
 }
 
@@ -258,7 +258,7 @@ body {
     font-size: 3rem;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_food-item_title {
+.tam-menu_item[data-is-available="false"] .tam-menu_food-item_title {
     color: #ACACAC;
     text-decoration: line-through;
     text-decoration-color: #f7733d;
@@ -279,7 +279,7 @@ body {
     text-align: right;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_food-item_price {
+.tam-menu_item[data-is-available="false"] .tam-menu_food-item_price {
     text-decoration: line-through;
     text-decoration-color: #f7733d;
     text-decoration-thickness: 0.15rem;
@@ -340,7 +340,7 @@ body {
     text-align: left;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_extra-item_title {
+.tam-menu_item[data-is-available="false"] .tam-menu_extra-item_title {
     text-decoration: line-through;
     text-decoration-color: #f7733d;
     text-decoration-thickness: 0.1rem;
@@ -353,7 +353,7 @@ body {
     text-align: right;
 }
 
-.tam-menu_item[data-is-available="0"] .tam-menu_extra-item_price {
+.tam-menu_item[data-is-available="false"] .tam-menu_extra-item_price {
     text-decoration: line-through;
     text-decoration-color: #f7733d;
     text-decoration-thickness: 0.1rem;

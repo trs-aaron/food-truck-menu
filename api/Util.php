@@ -5,7 +5,12 @@ class Util {
 
     public static function get_config() {
         $path = dirname(__FILE__).Util::$configFolderPath.Util::$configFileName;
-        $file = file_get_contents($path);
+        $file = @file_get_contents($path);
+
+        if ($file === false) {
+            throw new Exception('Could not open config file.');
+        }
+
         return json_decode($file, true);
     }
 
@@ -14,7 +19,12 @@ class Util {
         $version = self::generateVersion();
         $config['version'] = $version;
         $json = json_encode($config, JSON_PRETTY_PRINT);
-        file_put_contents($path, $json);
+        $resp = @file_put_contents($path, $json);
+
+        if ($resp === false) {
+            throw new Exception('Could not save config file.');
+        }
+
         return $version;
     }
 

@@ -1,4 +1,8 @@
 /* Bootstrap & paper dashboard overrides */
+.text-danger {
+    color: #dc3545 !important;
+}
+
 .nav, .pagination, .carousel, .panel-title a {
     cursor: pointer; 
 }
@@ -23,6 +27,10 @@
     color: white;
 }
 
+.modal-backdrop {
+    background-color: #00000080 !important;
+}
+
 /* Element styles */
 
 html {
@@ -32,10 +40,16 @@ html {
 body {
     background-color: #f4f3ef;
     font-size: 1.8rem;
+    padding-top: 2rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
+}
+
+select {
+    -webkit-appearance: menulist-button;
+    appearance: menulist-button;
 }
 
 button {
@@ -52,18 +66,40 @@ input:focus, textarea:focus {
     background-color: #ffffff;
 }
 
+.tam-admin_input > input, .tam-admin_input > textarea {
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+}
+
+.tam-admin_input > .text-danger, .tam-admin_modal-input > .text-danger {
+    font-size: 1.2rem;
+}
+
+.tam-admin_modal-input > input {
+    font-size: 2rem;
+    line-height: 2.4rem;
+}
+
 .tam-admin_input[data-modified="true"] > input, .tam-admin_input[data-modified="true"] > textarea {
     color: green !important;
+}
+
+.tam-admin_modal-body {
+    padding: 1rem 2rem;
+}
+
+.tam-admin_modal-input > input:focus {
+    border: 2px solid blue;
+}
+
+.tam_admin_tab{
+    font-size: 3.2rem;
 }
 
 .tam-admin_avail_groups {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding: 0;
-}
-
-.tam_admin_tab{
-    font-size: 3.2rem;
 }
 
 .tam-admin_avail_group {
@@ -99,12 +135,8 @@ input:focus, textarea:focus {
     font-size: 2rem;
 }
 
-option {
-    -webkit-appearance: none;
-}
-
-.tam-admin_menus_select > select > option[data-is-current="1"], .tam-admin_menus_select > select > option[data-is-current="true"] {
-    color: #51cbce;
+.tam-admin_menus_select > select > option[data-is-modified="1"], .tam-admin_menus_select > select > option[data-is-modified="true"] {
+    color: #51cbce !important;
 }
 
 .tam-admin_menus_card {
@@ -121,6 +153,10 @@ option {
 .tam-admin_menus_card-header-title {
     flex-grow: 1;
     margin-right: 4rem;
+}
+
+.tam-admin_menus_card-header-title, .tam-admin_menus_card-header-title > input {
+    font-size: 2.8rem;
 }
 
 .tam-admin_menus_price > input {
@@ -182,4 +218,62 @@ option {
 
 .tam-admin_menus_other .tam-admin_menus_actions {
     width: 18%;
+}
+
+/* Switch */
+.tam-admin_switch {
+    --switch-height: 2.6rem;
+    --switch-width: 4.6rem;
+    position: relative;
+    display: inline-block;
+    height: var(--switch-height);
+    width: var(--switch-width);
+}
+
+.tam-admin_switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tam-admin_switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--switch-height);
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.tam-admin_switch-slider:before {
+    --slider-height: calc(var(--switch-height) - 0.8rem);
+    --slider-width: calc((var(--switch-width) - 0.8rem) / 2);
+    position: absolute;
+    content: "";
+    height: var(--slider-height);
+    width: var(--slider-width);
+    left: 0.4rem;
+    bottom: 0.4rem;
+    border-radius: 50%;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .tam-admin_switch-slider {
+    background-color: #51cbce;
+}
+
+input:focus + .tam-admin_switch-slider {
+    box-shadow: 0 0 1px #51cbce;
+}
+
+input:checked + .tam-admin_switch-slider:before {
+    -webkit-transform: translateX(var(--slider-width));
+    -ms-transform: translateX(var(--slider-width));
+    transform: translateX(var(--slider-width));
 }

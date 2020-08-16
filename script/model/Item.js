@@ -54,6 +54,14 @@ class Item {
         return (this._index.modified || this._title.modified || this._desc.modified || this._price.modified || this._available.modified);
     }
 
+    get isEmpty() {
+        let hasTitle = (this.title && this.title !== '') ? true : false;
+        let hasDesc = (this.description && this.description !== '') ? true : false;
+        let hasPrice = (this.price && this.price !== 0) ? true : false;
+
+        return (!hasTitle && !hasDesc && !hasPrice);
+    }
+
     set initialIndex(val) {
         this._index = new ValueField(val);
     }
@@ -74,7 +82,7 @@ class Item {
         this._price.value = (val !== undefined) ? parseFloat(val) : null;
     }
 
-    set isAvailable(val) {
+    set available(val) {
         this._available.value = !(val === false);
     }
 

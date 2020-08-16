@@ -19,10 +19,12 @@ try {
         $version = Util::save_config($config);
         echo $version;
     } else {
+        http_response_code(400);
         echo 'Menu not in POST body.';
     }
 }
 catch (exception $e) {
+    http_response_code(500);
     echo $e->getMessage();
 }
 ?>

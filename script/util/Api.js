@@ -6,27 +6,52 @@ class Api {
 
     static async getConfigVersion() {
         let resp = await fetch(Util.buildUrl(Api.CONFIG_VERSION_PATH));
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         return resp.text();
     }
 
     static async getProgressionDelay() {
         let resp = await fetch(Util.buildUrl(Api.PROGRESSION_DELAY_PATH));
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         return resp.text();
     }
 
     static async getCurrentMenuId() {
         let resp = await fetch(Util.buildUrl(Api.CURR_MENU_ID_PATH));
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         return resp.text();
     }
 
     static async getCurrentMenu() {
         let resp = await fetch(Util.buildUrl(Api.CURR_MENU_PATH));
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         return Menu.fromJSON(await resp.json());
     }
 
     static async getMenus() {
         let menus = {};
         let resp = await fetch(Util.buildUrl(Api.ALL_MENUS_PATH));
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         let menusJson = await resp.json();
 
         Object.keys(menusJson).forEach((id) => {
@@ -52,6 +77,11 @@ class Api {
         };
 
         let resp = await fetch(Util.buildUrl(Api.SET_CURRENT_MENU_PATH), opts);
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         return await resp.text();
     }
 
@@ -66,6 +96,30 @@ class Api {
         };
 
         let resp = await fetch(Util.buildUrl(Api.SAVE_MENU_PATH), opts);
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
+        return await resp.text();
+    }
+
+    static async deleteMenu(menu) {
+        let body = {
+            menuId: menu.id
+        };
+
+        let opts = {
+            method: 'post',
+            body: JSON.stringify(body)
+        };
+
+        let resp = await fetch(Util.buildUrl(Api.DELETE_MENU_PATH), opts);
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
         return await resp.text();
     }
 }
@@ -76,6 +130,7 @@ Api.CURR_MENU_ID_PATH = '/api/config/menu/current/id/';
 Api.CURR_MENU_PATH = '/api/config/menu/current/';
 Api.ALL_MENUS_PATH = '/api/config/menu/all/';
 Api.SAVE_MENU_PATH = '/api/config/menu/save/';
+Api.DELETE_MENU_PATH = '/api/config/menu/delete/';
 Api.SET_CURRENT_MENU_PATH = 'api/config/menu/current/set/';
 
 
