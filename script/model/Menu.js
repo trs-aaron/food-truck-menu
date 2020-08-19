@@ -9,7 +9,7 @@ class Menu {
         this._name = new ValueField();
         this._food = null;
         this._other = [];
-        this._otherArrayModified = false;
+        this._otherArrayCnt = new ValueField(0);
     }
 
     get id() {
@@ -29,12 +29,12 @@ class Menu {
     }
 
     get otherCnt() {
-        return this._other.length;
+        return this._other.filter((ig) => !ig.isEmpty).length;
     }
 
     get modified() {
         let otherItemGroupsModifed = this._other.some((ig) => ig.modified);
-        return (otherItemGroupsModifed || this._id.modified || this._name.modified || this._food.modified || this._otherArrayModified);
+        return (otherItemGroupsModifed || this._id.modified || this._name.modified || this._food.modified || this._otherArrayCnt.modified);
     }
 
     set id(val) {
@@ -60,12 +60,16 @@ class Menu {
     newOtherItemGroup(index=null) {
         let group = ItemGroup.build();
         this._addOtherItemGroup(group, index);
-        this._onOtherArrayModified();
         return group;
     }
 
     removeOtherItemGroup(itemGroup) {
         this._other.splice(itemGroup.index, 1);
+
+        if (this.otherCnt <= 0) {
+            this.newOtherItemGroup();
+        }
+
         this._onOtherArrayModified();
     }
 
@@ -100,6 +104,7 @@ class Menu {
             index = (index && !isNaN(index)) ? index : this._other.length;
             itemGroup.initialIndex = index;
             this._other.splice(index, 0, itemGroup);
+            this._onOtherArrayModified();
         }
     }
 
@@ -110,7 +115,7 @@ class Menu {
     }
 
     _onOtherArrayModified() {
-        this._otherArrayModified = true;
+        this._otherArrayCnt.value = this.otherCnt;
         this._resetIndexes();
     }
 
@@ -119,7 +124,7 @@ class Menu {
             id: this._id.value,
             name: this._name.value,
             food: this._food,
-            other: this._other.filter(ig => ig.hasItems)
+            other: this._other.filter(ig => !ig.isEmpty)
         }
     }
 
@@ -135,10 +140,6 @@ class Menu {
         obj._food = (json['food']) ? ItemGroup.fromJSON(json['food']) : ItemGroup.build();
         obj._other = [];
 
-        if (!obj._food.hasItems) {
-            obj._food.newItem();
-        }
-
         json.other.forEach((ig) => {
             obj._addOtherItemGroup(ItemGroup.fromJSON(ig));
         });
@@ -146,6 +147,8 @@ class Menu {
         if (obj.otherCnt === 0) {
             obj.newOtherItemGroup();
         }
+
+        obj._otherArrayCnt = new ValueField(obj.otherCnt);
 
         return obj;
     }

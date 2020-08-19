@@ -1,6 +1,7 @@
 import Api from '../util/Api.js';
 import Menu from '../model/Menu.js';
 import Util from '../util/Util.js';
+import ValueField from '../model/ValueField.js'
 import PLACEHOLDER from './PLACEHOLDER.js';
 import STRING from './STRING.js';
 
@@ -14,6 +15,16 @@ app.factory( 'init', ['$rootScope', '$uibModal', async ($rootScope, $uibModal) =
     funcs.isCurrentMenu = (menu) => {
         return (menu.id === $rootScope.currentMenuId);
     };
+
+    funcs.onTabSelected = async (tabIndex) => {
+        let calls = [];
+
+        $rootScope._tableSelectedListeners.forEach((l) => {
+            calls.push((() => l(tabIndex))());
+        });
+
+        return Promise.all(calls);
+    }
 
     funcs.refreshMenu = async (menuId) => {
         let menu = null;
@@ -79,48 +90,62 @@ app.factory( 'init', ['$rootScope', '$uibModal', async ($rootScope, $uibModal) =
         modal.result.then(handleCreate, handleDismiss);
     };
 
+    funcs.addTabSelectedListener = (listener) => {
+        $rootScope._tableSelectedListeners.push(listener);
+    }
+
     $rootScope.funcs = { ...$rootScope.funcs, ...funcs };
 
     $rootScope.currentMenuId = await Api.getCurrentMenuId();
     $rootScope.menus = await Api.getMenus();
     $rootScope.activeTabIndex = 0;
+    $rootScope._tableSelectedListeners = [];
 }]);
 
 
-app.controller('Availability', ['$scope', 'init', ($scope, init) => {
+app.controller('Availability', ['$scope', '$rootScope', 'init', ($scope, $rootScope, init) => {
+    const TAB_INDEX = 0;
     let funcs = {};
     $scope.menuTitle = null;
     $scope.groups = [];
 
     const update = () => {
-        $scope.menu = ($scope.currentMenuId && $scope.menus && $scope.currentMenuId in $scope.menus) ? $scope.menus[$scope.currentMenuId] : null;
+        $scope.menu = ($rootScope.currentMenuId && $rootScope.menus && $rootScope.currentMenuId in $rootScope.menus) ? $rootScope.menus[$rootScope.currentMenuId] : null;
         $scope.itemGroups = []
 
         if ($scope.menu) {
-            if ($scope.menu.food.items.length > 0) {
+            if ($scope.menu.food.hasItems) {
                 $scope.itemGroups.push({
                     title: 'Food',
-                    items: $scope.menu.food.items.map((i) => i)
+                    items: $scope.menu.food.items.filter((i) => !i.isEmpty)
                 });
             }
 
             $scope.menu.other.forEach((ig) => {
-                if (ig.items.length > 0) {
+                if (ig.hasItems) {
                     $scope.itemGroups.push({
                         title: ig.title,
-                        items: ig.items.map((i) => i)
+                        items: ig.items.filter((i) => !i.isEmpty)
                     });
                 }
             });
         }
     }
 
-    const refreshMenu = async() => {
+    const refreshMenu = async () => {
         if ($scope.menu) {
             $scope.menu = await $scope.funcs.refreshMenu($scope.menu.id);
             update();
         }
     }
+
+    const onTabSelected = async (tabIndex) => {
+        if (tabIndex === TAB_INDEX) {
+            await update();
+        }
+    }
+
+    funcs.update = update;
 
     funcs.reset = async () => {
         let onResult = async (result) => {
@@ -149,14 +174,16 @@ app.controller('Availability', ['$scope', 'init', ($scope, init) => {
     $scope.funcs = {...$scope.funcs, ...funcs};
 
     init.then(() => {
-        $scope.$watch($scope.currentMenuId, update);
+        $scope.funcs.addTabSelectedListener(async (i) => { await onTabSelected(i) });
+        $scope.$watch($rootScope.currentMenuId, update);
         update();
         $scope.$apply();
     });
 }]);
 
 
-app.controller('Menus', ['$scope', 'init', ($scope, init) => {
+app.controller('Menus', ['$scope', '$rootScope', 'init', ($scope, $rootScope, init) => {
+    const TAB_INDEX = 1;
     let funcs = {};
     $scope.menu = null;
     $scope.menuSelect = {
@@ -178,18 +205,18 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
     };
 
     const refreshMenuSelect = () => {
-        $scope.menuSelect.opts = Object.values($scope.menus).sort((m1, m2) => m1.name.localeCompare(m2.name));
+        $scope.menuSelect.opts = Object.values($rootScope.menus).sort((m1, m2) => m1.name.localeCompare(m2.name));
 
         if (!$scope.menuSelect.selected && $scope.menuSelect.opts.length > 0) {
-            $scope.menuSelect.selected = ($scope.currentMenuId && $scope.currentMenuId in $scope.menus && $scope.menus[$scope.currentMenuId]) ? $scope.currentMenuId : $scope.menuSelect.opts[0].id;
+            $scope.menuSelect.selected = ($rootScope.currentMenuId && $rootScope.currentMenuId in $rootScope.menus && $rootScope.menus[$rootScope.currentMenuId]) ? $rootScope.currentMenuId : $scope.menuSelect.opts[0].id;
         }
 
-        $scope.menu = $scope.menus[$scope.menuSelect.selected];
+        $scope.menu = $rootScope.menus[$scope.menuSelect.selected];
     }
 
     const addMenu = (menu) => {
         if (menu) {
-            $scope.menus[menu.id] = menu;
+            $rootScope.menus[menu.id] = menu;
             $scope.menu = menu;
             $scope.menuSelect.selected = menu.id;
             refreshMenuSelect();
@@ -197,10 +224,16 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
     }
 
     const removeMenu = (menu) => {
-        if (menu && menu.id in $scope.menus) {
-            delete $scope.menus[menu.id];
+        if (menu && menu.id in $rootScope.menus) {
+            delete $rootScope.menus[menu.id];
             $scope.menuSelect.selected = null;
             refreshMenuSelect();
+        }
+    }
+
+    const onTabSelected = async (tabIndex) => {
+        if (tabIndex === TAB_INDEX) {
+            await refreshMenu();
         }
     }
 
@@ -212,7 +245,11 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
             if (result === true) {
                 if ($scope.menuSelect.selected) {
                     try {
+                        let menu = $scope.menus[$scope.menuSelect.selected];
+                        menu.setAllItemsAvailable();
                         await Api.setCurrentMenuId($scope.menuSelect.selected);
+                        await Api.saveMenu(menu);
+                        $rootScope.currentMenuId = await Api.getCurrentMenuId();
                     } catch(e) {
                         $scope.funcs.openAlertModal(STRING.setAsCurrent.error.title, errMsg);
                     }
@@ -279,6 +316,15 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
                     await Api.saveMenu(menu);
 
                     addMenu(menu);
+
+                    if (Object.keys($rootScope.menus).length === 1) {
+                        let currMenuId = await Api.getCurrentMenuId();
+
+                        if (!currMenuId || currMenuId === '') {
+                            await Api.setCurrentMenuId(menu.id);
+                            $rootScope.currentMenuId = await Api.getCurrentMenuId();
+                        }
+                    }
                 } catch(e) {
                     $scope.funcs.openAlertModal(STRING.newMenu.error.title, STRING.newMenu.error.message);
                 }
@@ -383,19 +429,56 @@ app.controller('Menus', ['$scope', 'init', ($scope, init) => {
     };
 
     $scope.menuSelect.funcs.onChange = () => {
-        $scope.menu = ($scope.menuSelect.selected && $scope.menuSelect.selected in $scope.menus) ? $scope.menus[$scope.menuSelect.selected] : null;
+        $scope.menu = ($scope.menuSelect.selected && $scope.menuSelect.selected in $rootScope.menus) ? $rootScope.menus[$scope.menuSelect.selected] : null;
     };
 
     $scope.funcs = {...$scope.funcs, ...funcs};
 
     init.then(() => {
-        if ($scope.menus) {
-            if ($scope.currentMenuId && $scope.currentMenuId in $scope.menus && $scope.menus[$scope.currentMenuId]) {
-                $scope.menu = $scope.menus[$scope.currentMenuId];
+        if ($rootScope.menus) {
+            if ($rootScope.currentMenuId && $rootScope.currentMenuId in $rootScope.menus && $rootScope.menus[$rootScope.currentMenuId]) {
+                $scope.menu = $rootScope.menus[$rootScope.currentMenuId];
             }
 
             refreshMenuSelect();
         }
+
+        $scope.funcs.addTabSelectedListener(async (i) => { await onTabSelected(i) });
+    });
+}]);
+
+
+app.controller('Settings', ['$scope', '$rootScope', 'init', ($scope, $rootScope, init) => {
+    let funcs = {};
+    $scope.theme= new ValueField(null);
+    $scope.progressionDelay = new ValueField();
+    $scope.settingsModified = () => { return ($scope.theme.modified || $scope.progressionDelay.modified); };
+
+    const refreshValues = async () => {
+        $scope.theme = new ValueField(await Api.getTheme());
+        $scope.progressionDelay = new ValueField(parseInt(await Api.getProgressionDelay()));
+    };
+
+    funcs.save = async () => {
+        let onResult = async (result) => {
+            if (result === true) {
+                try {
+                    await Api.setTheme($scope.theme.value);
+                    await Api.setProgressionDelay($scope.progressionDelay.value);
+                    await refreshValues();
+                } catch(e) {
+                    $scope.funcs.openAlertModal(STRING.saveSettings.error.title, STRING.saveSettings.error.message);
+                }
+            }
+        };
+
+        $scope.funcs.openConfirmationModal(STRING.saveSettings.confirmModal.title, STRING.saveSettings.confirmModal.message, onResult);
+    };
+
+    $scope.funcs = {...$scope.funcs, ...funcs};
+
+    init.then(async() => {
+        await refreshValues();
     });
 }]);
 
@@ -440,6 +523,7 @@ app.component('confirmationModalCpnt', {
         };
     }
 });
+
 
 app.component('newMenuModalCpnt', {
     templateUrl: 'newMenuModal.html',

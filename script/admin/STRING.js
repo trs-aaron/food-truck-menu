@@ -8,7 +8,17 @@ export default {
         },
         error: {
             title: 'Error',
-            message: `Failed to reset.`
+            message: 'Failed to reset.'
+        }
+    },
+    saveSettings: {
+        confirmModal: {
+            title: 'Save Settings',
+            message: 'Are you sure you would like to save these settings?'
+        },
+        error: {
+            title: 'Error',
+            message: 'Failed to save these settings.'
         }
     },
     saveMenu: {
@@ -34,7 +44,7 @@ export default {
     newMenu: {
         error: {
             title: 'Error',
-            message: `Failed to create new menu.`
+            message: 'Failed to create new menu.'
         },
         nameInvalid: {
             duplicate: 'Menu name already exists.'

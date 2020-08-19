@@ -5,7 +5,17 @@ import Util from './Util.js';
 class Api {
 
     static async getConfigVersion() {
-        let resp = await fetch(Util.buildUrl(Api.CONFIG_VERSION_PATH));
+        let resp = await fetch(Util.buildUrl(Api.GET_CONFIG_VERSION_PATH));
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
+        return resp.text();
+    }
+
+    static async getTheme() {
+        let resp = await fetch(Util.buildUrl(Api.GET_THEME_PATH));
 
         if (resp.status !== 200) {
             throw new Error(resp.text());
@@ -15,7 +25,7 @@ class Api {
     }
 
     static async getProgressionDelay() {
-        let resp = await fetch(Util.buildUrl(Api.PROGRESSION_DELAY_PATH));
+        let resp = await fetch(Util.buildUrl(Api.GET_PROGRESSION_DELAY_PATH));
 
         if (resp.status !== 200) {
             throw new Error(resp.text());
@@ -25,7 +35,7 @@ class Api {
     }
 
     static async getCurrentMenuId() {
-        let resp = await fetch(Util.buildUrl(Api.CURR_MENU_ID_PATH));
+        let resp = await fetch(Util.buildUrl(Api.GET_CURR_MENU_ID_PATH));
 
         if (resp.status !== 200) {
             throw new Error(resp.text());
@@ -35,7 +45,7 @@ class Api {
     }
 
     static async getCurrentMenu() {
-        let resp = await fetch(Util.buildUrl(Api.CURR_MENU_PATH));
+        let resp = await fetch(Util.buildUrl(Api.GET_CURR_MENU_PATH));
 
         if (resp.status !== 200) {
             throw new Error(resp.text());
@@ -46,7 +56,7 @@ class Api {
 
     static async getMenus() {
         let menus = {};
-        let resp = await fetch(Util.buildUrl(Api.ALL_MENUS_PATH));
+        let resp = await fetch(Util.buildUrl(Api.GET_ALL_MENUS_PATH));
 
         if (resp.status !== 200) {
             throw new Error(resp.text());
@@ -62,8 +72,42 @@ class Api {
         return menus;
     }
 
+    static async setTheme(theme) {
+        let body = {
+            theme: theme
+        };
+
+        let opts = {
+            method: 'post',
+            body: JSON.stringify(body)
+        };
+
+        let resp = await fetch(Util.buildUrl(Api.SET_THEME_PATH), opts);
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
+        return await resp.text();
+    }
+
     static async setProgressionDelay(delay) {
-        alert(`SET PROGRESSION DELAY ${delay}`);
+        let body = {
+            progressionDelay: delay
+        };
+
+        let opts = {
+            method: 'post',
+            body: JSON.stringify(body)
+        };
+
+        let resp = await fetch(Util.buildUrl(Api.SET_PROGRESSION_DELAY_PATH), opts);
+
+        if (resp.status !== 200) {
+            throw new Error(resp.text());
+        }
+
+        return await resp.text();
     }
 
     static async setCurrentMenuId(id) {
@@ -124,11 +168,14 @@ class Api {
     }
 }
 
-Api.CONFIG_VERSION_PATH = '/api/config/version/';
-Api.PROGRESSION_DELAY_PATH = '/api/config/progressionDelay/';
-Api.CURR_MENU_ID_PATH = '/api/config/menu/current/id/';
-Api.CURR_MENU_PATH = '/api/config/menu/current/';
-Api.ALL_MENUS_PATH = '/api/config/menu/all/';
+Api.GET_CONFIG_VERSION_PATH = '/api/config/version/';
+Api.GET_THEME_PATH = '/api/config/theme/';
+Api.SET_THEME_PATH = '/api/config/theme/set/';
+Api.GET_PROGRESSION_DELAY_PATH = '/api/config/progressionDelay/';
+Api.SET_PROGRESSION_DELAY_PATH = '/api/config/progressionDelay/set/';
+Api.GET_CURR_MENU_ID_PATH = '/api/config/menu/current/id/';
+Api.GET_CURR_MENU_PATH = '/api/config/menu/current/';
+Api.GET_ALL_MENUS_PATH = '/api/config/menu/all/';
 Api.SAVE_MENU_PATH = '/api/config/menu/save/';
 Api.DELETE_MENU_PATH = '/api/config/menu/delete/';
 Api.SET_CURRENT_MENU_PATH = 'api/config/menu/current/set/';

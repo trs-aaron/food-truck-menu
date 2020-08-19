@@ -9,8 +9,10 @@
         <script src="./lib/script/mustache/mustache.min.js"></script>
         <script type="module" src="./script/main.js"></script>
     </head>
-    <body class="tam-menu_theme_dark">
-        <div class="tam-menu_main">
+    <body>
+    </body>
+    <template id="tam-menu-container-TEMPLATE">
+        <div class="tam-menu_main {{themeClass}}">
             <div class="tam-menu_overlay"></div>
             <div id="tam-menu_cntr" class="tam-menu_cntr" data-is-visible="0" data-has-food="0" data-other-count="0">
                 <div id="tam-menu_food" class="tam-menu_items tam-menu_food-cntr"></div>
@@ -18,7 +20,7 @@
                 <div class="tam-menu_logo"></div>
             </div>
         </div>
-    </body>
+    </template>
     <template id="tam-menu-food-items-TEMPLATE">
         <div class="tam-menu_items-cntr tam-menu_food-item-cntr">
             {{#items}}

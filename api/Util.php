@@ -2,9 +2,15 @@
 class Util { 
     private static $configFolderPath = '/../config/';
     private static $configFileName = 'config.json';
+    private static $configBaseFileName = 'config-base.json';
 
     public static function get_config() {
         $path = dirname(__FILE__).Util::$configFolderPath.Util::$configFileName;
+
+        if (!file_exists($path)) {
+            Util::create_default_config();
+        }
+
         $file = @file_get_contents($path);
 
         if ($file === false) {
@@ -16,7 +22,7 @@ class Util {
 
     public static function save_config($config) {
         $path = dirname(__FILE__).Util::$configFolderPath.Util::$configFileName;
-        $version = self::generateVersion();
+        $version = self::generate_version();
         $config['version'] = $version;
         $json = json_encode($config, JSON_PRETTY_PRINT);
         $resp = @file_put_contents($path, $json);
@@ -28,7 +34,13 @@ class Util {
         return $version;
     }
 
-    private static function generateVersion() {
+    private static function create_default_config() {
+        $basePath = dirname(__FILE__).Util::$configFolderPath.Util::$configBaseFileName;
+        $path = dirname(__FILE__).Util::$configFolderPath.Util::$configFileName;
+        echo copy($basePath, $path);
+    }
+
+    private static function generate_version() {
         return date('YmdHisv');
     }
 }

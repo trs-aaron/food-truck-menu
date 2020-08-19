@@ -8,7 +8,7 @@ class ItemGroup {
         this._index = new ValueField();
         this._title = new ValueField();
         this._items = [];
-        this._itemsArrayModifed = false;
+        this._itemsArrayCnt = new ValueField(0);
     }
 
     get index() {
@@ -42,7 +42,7 @@ class ItemGroup {
 
     get modified() {
         let itemsModifed = this._items.some((i) => i.modified);
-        return (itemsModifed || this._index.modified || this._title.modified || this._itemsArrayModifed);
+        return (itemsModifed || this._index.modified || this._title.modified || this._itemsArrayCnt.modified);
     }
 
     set initialIndex(val) {
@@ -74,6 +74,11 @@ class ItemGroup {
 
     removeItem(item) {
         this._items.splice(item.index, 1);
+
+        if (this.itemCnt <= 0) {
+            this.newItem();
+        }
+
         this._onItemsArrayModified();
     }
 
@@ -116,7 +121,7 @@ class ItemGroup {
     }
 
     _onItemsArrayModified() {
-        this._itemsArrayModified = true;
+        this._itemsArrayCnt.value = this.itemCnt;
         this._resetIndexes();
     }
 
@@ -140,6 +145,12 @@ class ItemGroup {
         json.items.forEach((i) => {
             obj._addItem(Item.fromJSON(i));
         });
+
+        if (obj.itemCnt === 0) {
+            obj.newItem();
+        }
+
+        obj._itemsArrayCnt = new ValueField(obj.itemCnt);
 
         return obj;
     }

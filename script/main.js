@@ -1,4 +1,5 @@
 import Api from './util/Api.js';
+import ValueField from './model/ValueField.js';
 
 
 class MenuItemField {
@@ -260,13 +261,14 @@ class MenuItemCntr {
 MenuItemCntr.ITEMS_EL_CLASS = 'tam-menu_items-cntr';
 
 
-class Menu {
+class MenuCntr {
 
     constructor() {
         this._configVersion = null;
+        this._theme = new ValueField(null);
         this._menuId = null;
         this._menu = null;
-        this._itemProgDelay = Menu.DEFAULT_PROGRESSION_DELAY;
+        this._itemProgDelay = MenuCntr.DEFAULT_PROGRESSION_DELAY;
         this._cntrEl = null;
         this._foodCntrEl = null;
         this._otherCntrEl = null;
@@ -281,11 +283,15 @@ class Menu {
     }
 
     get hasFood() {
-        return this._cntrEl.getAttribute(Menu.HAS_FOOD_ATTR);
+        return this._cntrEl.getAttribute(MenuCntr.HAS_FOOD_ATTR);
     }
 
     get otherCount() {
-        return this._cntrEl.getAttribute(Menu.OTHER_COUNT_ATTR);
+        return this._cntrEl.getAttribute(MenuCntr.OTHER_COUNT_ATTR);
+    }
+
+    setTheme(theme) {
+        this._theme.value = theme;
     }
 
     setConfigVersion(version) {
@@ -305,27 +311,33 @@ class Menu {
     }
 
     setHasFood(value) {
-        this._cntrEl.setAttribute(Menu.HAS_FOOD_ATTR, (value == true) ? 1 : 0);
+        this._cntrEl.setAttribute(MenuCntr.HAS_FOOD_ATTR, (value == true) ? 1 : 0);
     }
 
     setOtherCount(value) {
-        this._cntrEl.setAttribute(Menu.OTHER_COUNT_ATTR, value);
+        this._cntrEl.setAttribute(MenuCntr.OTHER_COUNT_ATTR, value);
     }
 
     hide() {
-        this._cntrEl.setAttribute(Menu.VISIBLE_ATTR, 0);
+        this._cntrEl.setAttribute(MenuCntr.VISIBLE_ATTR, 0);
     }
 
     show() {
-        this._cntrEl.setAttribute(Menu.VISIBLE_ATTR, 1);
+        this._cntrEl.setAttribute(MenuCntr.VISIBLE_ATTR, 1);
     }
 
     async init() {
-        this._cntrEl = document.getElementById(Menu.CNTR_ID);
-        this._foodCntrEl = document.getElementById(Menu.FOOD_CNTR_ID);
-        this._otherCntrEl = document.getElementById(Menu.OTHER_CNTR_ID);
-        this._foodItemsTmpl = document.getElementById(Menu.FOOD_ITEMS_TMPL_ID).innerHTML;
-        this._extraItemsTmpl = document.getElementById(Menu.EXTRA_ITEMS_TMPL_ID).innerHTML;
+        this._theme = new ValueField(await Api.getTheme());
+
+        this._cntrTmpl = document.getElementById(MenuCntr.CNTR_TMPL_ID).innerHTML;
+        this._foodItemsTmpl = document.getElementById(MenuCntr.FOOD_ITEMS_TMPL_ID).innerHTML;
+        this._extraItemsTmpl = document.getElementById(MenuCntr.EXTRA_ITEMS_TMPL_ID).innerHTML;
+
+        await this._renderContainer();
+
+        this._cntrEl = document.getElementById(MenuCntr.CNTR_ID);
+        this._foodCntrEl = document.getElementById(MenuCntr.FOOD_CNTR_ID);
+        this._otherCntrEl = document.getElementById(MenuCntr.OTHER_CNTR_ID);
 
         await this._refresh();
     }
@@ -362,15 +374,21 @@ class Menu {
             }
 
             Promise.all([
+                await Api.getTheme(),
                 await Api.getConfigVersion(),
                 await Api.getProgressionDelay(),
                 await Api.getCurrentMenuId(),
                 await Api.getCurrentMenu()
             ]).then((results) => {
-                let configVersion = results[0];
-                let progDelay = results[1];
-                let currMenuId = results[2];
-                let currMenu = results[3];
+                let theme = results[0];
+                let configVersion = results[1];
+                let progDelay = results[2];
+                let currMenuId = results[3];
+                let currMenu = results[4];
+
+                if (!theme || theme === '') {
+                    onError('Could not retrieve theme.');
+                }
 
                 if (!configVersion || configVersion === '') {
                     onError('Could not retrieve configuration version.');
@@ -388,6 +406,7 @@ class Menu {
                     onError('Could not retrieve current menu.');
                 }
 
+                this.setTheme(theme);
                 this.setConfigVersion(configVersion);
                 this.setItemProgressionDelay(progDelay);
                 this.setMenuId(currMenuId);
@@ -400,6 +419,22 @@ class Menu {
                 onError(e.msg);
             });
         });
+    }
+
+    async _renderContainer() {
+        let themeClass = null;
+
+        switch(this._theme.value) {
+            case 'light':
+                themeClass = 'tam-menu_theme_light';
+                break;
+
+            default:
+                themeClass = 'tam-menu_theme_dark';
+                break;
+        }
+
+        document.body.innerHTML = Mustache.render(this._cntrTmpl, { themeClass: themeClass });
     }
 
     async _renderItems() {
@@ -417,9 +452,14 @@ class Menu {
     async _refresh() {
         this.hide();
         await this._getConfig();
+
+        if (this._theme.modified) {
+            location.reload();
+        }
+
         await this._renderItems();
 
-        let itemCntrEls = document.getElementsByClassName(Menu.ITEMS_EL_CLASS);
+        let itemCntrEls = document.getElementsByClassName(MenuCntr.ITEMS_EL_CLASS);
 
         Array.from(itemCntrEls).forEach((el) => {
             this._itemCntrs.push(new MenuItemCntr(el));
@@ -464,20 +504,21 @@ class Menu {
     }
 }
 
-Menu.DEFAULT_PROGRESSION_DELAY = 10000;
-Menu.CNTR_ID = 'tam-menu_cntr';
-Menu.FOOD_CNTR_ID = 'tam-menu_food';
-Menu.OTHER_CNTR_ID = 'tam-menu_other';
-Menu.ITEMS_EL_CLASS = 'tam-menu_items';
-Menu.VISIBLE_ATTR = 'data-is-visible';
-Menu.HAS_FOOD_ATTR = 'data-has-food';
-Menu.OTHER_COUNT_ATTR = 'data-other-count';
-Menu.FOOD_ITEMS_TMPL_ID = 'tam-menu-food-items-TEMPLATE';
-Menu.EXTRA_ITEMS_TMPL_ID = 'tam-menu-extra-items-TEMPLATE';
+MenuCntr.DEFAULT_PROGRESSION_DELAY = 10000;
+MenuCntr.CNTR_ID = 'tam-menu_cntr';
+MenuCntr.FOOD_CNTR_ID = 'tam-menu_food';
+MenuCntr.OTHER_CNTR_ID = 'tam-menu_other';
+MenuCntr.ITEMS_EL_CLASS = 'tam-menu_items';
+MenuCntr.VISIBLE_ATTR = 'data-is-visible';
+MenuCntr.HAS_FOOD_ATTR = 'data-has-food';
+MenuCntr.OTHER_COUNT_ATTR = 'data-other-count';
+MenuCntr.CNTR_TMPL_ID = 'tam-menu-container-TEMPLATE';
+MenuCntr.FOOD_ITEMS_TMPL_ID = 'tam-menu-food-items-TEMPLATE';
+MenuCntr.EXTRA_ITEMS_TMPL_ID = 'tam-menu-extra-items-TEMPLATE';
 
 
 window.onload = async () => {
-    let menu = new Menu();
+    let menu = new MenuCntr();
     await menu.init();
     menu.start();
 };

@@ -34,6 +34,7 @@
 /* Element styles */
 
 html {
+    margin-left: calc(100vw - 100%);
     font-size: 10px;
 }
 
@@ -57,18 +58,29 @@ button {
 }
 
 input, textarea {
-    background-color: transparent;
-    border: none;
-    resize: none;
 }
 
 input:focus, textarea:focus {
     background-color: #ffffff;
 }
 
+input[type="number"] {
+    text-align: right;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+    margin-left: 1rem;
+}
+
+td.tam-admin_input > input, td.tam-admin_input > textarea {
+    background-color: transparent;
+    border: none;
+}
+
 .tam-admin_input > input, .tam-admin_input > textarea {
     font-size: 1.6rem;
     line-height: 2.6rem;
+    resize: none;
 }
 
 .tam-admin_input > .text-danger, .tam-admin_modal-input > .text-danger {
@@ -135,7 +147,7 @@ input:focus, textarea:focus {
     font-size: 2rem;
 }
 
-.tam-admin_menus_select > select > option[data-is-modified="1"], .tam-admin_menus_select > select > option[data-is-modified="true"] {
+.tam-admin_menus_select > select > option[data-modified="1"], .tam-admin_menus_select > select > option[data-modified="true"] {
     color: #51cbce !important;
 }
 
@@ -155,17 +167,17 @@ input:focus, textarea:focus {
     margin-right: 4rem;
 }
 
+.tam-admin_menus_card-header-title > input {
+    background-color: transparent;
+    border: none;
+}
+
 .tam-admin_menus_card-header-title, .tam-admin_menus_card-header-title > input {
     font-size: 2.8rem;
 }
 
 .tam-admin_menus_price > input {
     font-size: 2.8rem;
-    text-align: right;
-}
-
-.tam-admin_menus_price > input::-webkit-inner-spin-button {
-    margin-left: 1rem;
 }
 
 .tam-admin_menus_actions-bttns {
@@ -218,6 +230,43 @@ input:focus, textarea:focus {
 
 .tam-admin_menus_other .tam-admin_menus_actions {
     width: 18%;
+}
+
+.tam-admin_settings_card {
+    display: grid;
+    grid-template-columns: repeat(2, max-content auto);
+    padding: 4rem;
+}
+
+.tam-admin_settings_setting {
+    display: contents;
+}
+
+.tam-admin_settings_setting-label {
+    padding-right: 2rem;
+    font-size: 1.4rem;
+    line-height: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.tam-admin_settings_radio {
+    margin-right: 2rem;
+}
+
+.tam-admin_settings_radio:last-of-type {
+    margin-right: 0;
+}
+
+.tam-admin_settings_radio > input {
+    height: 2rem;
+    width: 2rem;
+}
+
+.tam-admin_settings_radio > label {
+    text-align: left;
+    margin-left: 1rem;
+    padding-left: 0 !important;
 }
 
 /* Switch */

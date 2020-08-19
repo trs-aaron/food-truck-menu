@@ -14,11 +14,11 @@
         <script src="../lib/script/ui-bootstrap_2_5/ui-bootstrap.min.js"></script>
     </head>
     <body>
-        <div class="container p-3">
+        <div class="container p-3 ng-cloak">
           <uib-tabset active="0">
-            <uib-tab index="0" heading="Availability" class="tam_admin_tab">
+            <uib-tab index="0" heading="Availability" class="tam_admin_tab" select="funcs.onTabSelected(0)">
               <div ng-controller="Availability" class="container">
-                <div class="row align-items-center my-3">
+                <div class="row align-items-center my-3" ng-if="menu">
                   <div class="col-10">
                     <h4 class="text-muted">{{menu.name}}</h4>
                   </div>
@@ -29,14 +29,16 @@
                 <div class="row my-3">
                   <div class="col card tam-admin_avail_groups">
                     <div ng-repeat="itemGroup in itemGroups" class="tam-admin_avail_group">
-                      <h5 class="tam-admin_avail_group-title">{{itemGroup.title}}</h5>
-                      <div class="tam-admin_avail_group-items">
-                        <div ng-repeat="item in itemGroup.items" class="tam-admin_avail_group-item">
-                          <div class="tam-admin_avail_group-item-title">{{item.title}}</div>
-                          <label class="tam-admin_switch">
-                            <input type="checkbox" ng-model="item.available" ng-change="funcs.onItemAvailableChange()">
-                            <span class="tam-admin_switch-slider"></span>
-                          </label>
+                      <div>
+                        <h5 class="tam-admin_avail_group-title">{{itemGroup.title}}</h5>
+                        <div class="tam-admin_avail_group-items">
+                          <div ng-repeat="item in itemGroup.items" class="tam-admin_avail_group-item">
+                            <div class="tam-admin_avail_group-item-title">{{item.title}}</div>
+                            <label class="tam-admin_switch">
+                              <input type="checkbox" ng-model="item.available" ng-change="funcs.onItemAvailableChange()">
+                              <span class="tam-admin_switch-slider"></span>
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -44,13 +46,13 @@
                 </div>
               </div>
             </uib-tab>
-            <uib-tab index="1" heading="Menus" class="tam_admin_tab">
+            <uib-tab index="1" heading="Menus" class="tam_admin_tab" select="funcs.onTabSelected(1)">
               <div ng-controller="Menus" class="container">
                 <div class="row align-items-center my-3">
                   <div class="col-4">
                     <div class="tam-admin_menus_select">
                       <select class="form-control" ng-model="menuSelect.selected" ng-change="menuSelect.funcs.onChange()">
-                        <option ng-repeat="menu in menuSelect.opts" data-is-modified="{{menu.modified}}" value="{{menu.id}}">{{menu.name}}</option>
+                        <option ng-repeat="menu in menuSelect.opts" data-modified="{{menu.modified}}" value="{{menu.id}}">{{menu.name}}</option>
                       </select>
                     </div>
                   </div>
@@ -59,16 +61,16 @@
                   </button>
                   </div>
                   <div class="col">
-                    <button type="button" class="btn btn-primary btn-md btn-block" ng-click="funcs.setAsCurrent()">Set as Current</button>
+                    <button type="button" class="btn btn-primary btn-md btn-block" ng-click="funcs.setAsCurrent()" ng-disabled="!menu">Set as Current</button>
                   </div>
                   <div class="col">
-                    <button type="button" class="btn btn-danger btn-md btn-block" ng-click="funcs.delete()">Delete Menu</button>
+                    <button type="button" class="btn btn-danger btn-md btn-block" ng-click="funcs.delete()" ng-disabled="!menu">Delete Menu</button>
                   </div>
                   <div class="col">
                     <button type="button" class="btn btn-success btn-md btn-block" ng-click="funcs.new()">New Menu</button>
                   </div>
                 </div>
-                <div class="row my-3">
+                <div class="row my-3" ng-if="menu">
                   <div class="col card tam-admin_menus_card tam-admin_menus_food">
                     <div class="tam-admin_menus_card-header">
                       <h4 class="tam-admin_menus_card-header-title">Food</h4>
@@ -159,7 +161,38 @@
                 </div>
               </div>
             </uib-tab>
-            <uib-tab index="2" heading="Settings" class="tam_admin_tab ">
+            <uib-tab index="2" heading="Settings" class="tam_admin_tab" select="funcs.onTabSelected(2)">
+              <div ng-controller="Settings" class="container">
+                <div class="row align-items-center my-3">
+                  <div class="col-10"></div>
+                  <div class="col-2">
+                    <button type="button" class="btn btn-primary btn-md btn-block" ng-model="singleModel" ng-click="funcs.save()" ng-disabled="!settingsModified()">Save</button>
+                  </div>
+                </div>
+                <div class="row my-3">
+                  <div class="col card tam-admin_settings_card">
+                    <div class="tam-admin_settings_setting">
+                      <div class="tam-admin_settings_setting-label">Theme</div>
+                      <div class="tam-admin_input tam-admin_settings_setting-value" data-modified="{{theme.modified}}">
+                        <div class="form-check form-check-inline tam-admin_settings_radio">
+                          <input type="radio" id="setting-theme-dark" class="form-check-input tam-admin_input" value="dark" ng-model="theme.value">
+                          <label for="setting-theme-dark" class="form-check-label">Dark</label>
+                        </div>
+                        <div class="form-check form-check-inline tam-admin_settings_radio">
+                          <input type="radio" id="setting-theme-light" class="form-check-input tam-admin_input" value="light" ng-model="theme.value">
+                          <label for="setting-theme-light" class="form-check-label">Light</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tam-admin_settings_setting">
+                      <div class="tam-admin_settings_setting-label">Progression Delay</div>
+                      <div class="tam-admin_input tam-admin_settings_setting-value" data-modified="{{progressionDelay.modified}}">
+                        <input type="number" ng-model="progressionDelay.value" min="1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </uib-tab>
           </uib-tabset>
         </div>
