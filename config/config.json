@@ -1,12 +1,11 @@
 {
-    "version": "20200815043631000",
+    "version": "20200819044808000",
     "progressionDelay": 10000,
     "currentMenuId": "tacos",
     "menus": {
         "tacos": {
             "id": "tacos",
             "name": "Tacos",
-            "title": "Tacos",
             "food": {
                 "title": null,
                 "items": [
@@ -23,27 +22,9 @@
                         "available": true
                     },
                     {
-                        "title": "Octopus Cocktail",
-                        "description": "Octopus, avocado, cucumber, tomato & tortilla chips",
-                        "price": 8,
-                        "available": true
-                    },
-                    {
-                        "title": "Scallop and Shrimp Ceviche Tostada",
-                        "description": "Scallops, shrimp, avocado, radish, cilantro & chili de arbol.",
-                        "price": 7,
-                        "available": true
-                    },
-                    {
                         "title": "Chips & Salsa",
                         "description": null,
                         "price": 4,
-                        "available": true
-                    },
-                    {
-                        "title": "Guacamole",
-                        "description": null,
-                        "price": 2,
                         "available": true
                     }
                 ]
@@ -67,7 +48,7 @@
                         {
                             "title": "Sprite",
                             "description": null,
-                            "price": 4.25,
+                            "price": 4,
                             "available": true
                         },
                         {
@@ -107,9 +88,9 @@
                             "available": true
                         },
                         {
-                            "title": "Hop Notion IPA",
+                            "title": "White Claw - Black Cherry",
                             "description": null,
-                            "price": 6,
+                            "price": 5,
                             "available": true
                         },
                         {
