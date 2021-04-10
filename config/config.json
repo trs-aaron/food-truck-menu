@@ -1,0 +1,203 @@
+{
+    "version": "20201010030839000",
+    "theme": "dark",
+    "progressionDelay": 10000,
+    "currentMenuId": "fish",
+    "menus": {
+        "burritos": {
+            "id": "burritos",
+            "name": "Burritos",
+            "food": {
+                "title": null,
+                "items": [
+                    {
+                        "title": "Steak Burrito",
+                        "description": "Steak Burrito",
+                        "price": 10,
+                        "available": true
+                    },
+                    {
+                        "title": "Chicken",
+                        "description": null,
+                        "price": 0,
+                        "available": true
+                    }
+                ]
+            },
+            "other": [
+                {
+                    "title": "Drinks",
+                    "items": [
+                        {
+                            "title": "Beer",
+                            "description": null,
+                            "price": 5,
+                            "available": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "tacos": {
+            "id": "tacos",
+            "name": "Tacos",
+            "food": {
+                "title": null,
+                "items": []
+            },
+            "other": []
+        },
+        "fish": {
+            "id": "fish",
+            "name": "Fish",
+            "food": {
+                "title": null,
+                "items": [
+                    {
+                        "title": "Halibut",
+                        "description": "This is a great item that comes with many great sided. Those include side 1 & side 2 as well as side 3. And you won't want to leave without having side 4.",
+                        "price": 19,
+                        "available": true
+                    },
+                    {
+                        "title": "Trout",
+                        "description": "This is a great item that comes with many great sided. Those include side 1 & side 2 as well as side 3. And you won't want to leave without having side 4.",
+                        "price": 30,
+                        "available": true
+                    },
+                    {
+                        "title": "Salmon",
+                        "description": "This is a great item that comes with many great sided. Those include side 1 & side 2 as well as side 3. And you won't want to leave without having side 4.",
+                        "price": 25,
+                        "available": true
+                    },
+                    {
+                        "title": "Tuna",
+                        "description": "This is a great item that comes with many great sided. Those include side 1 & side 2 as well as side 3. And you won't want to leave without having side 4.",
+                        "price": 18,
+                        "available": true
+                    },
+                    {
+                        "title": "Catfish",
+                        "description": "This is a great item that comes with many great sided. Those include side 1 & side 2 as well as side 3. And you won't want to leave without having side 4.",
+                        "price": 10,
+                        "available": true
+                    },
+                    {
+                        "title": "Grouper",
+                        "description": "This is a great item that comes with many great sided. Those include side 1 & side 2 as well as side 3. And you won't want to leave without having side 4.",
+                        "price": 12,
+                        "available": true
+                    }
+                ]
+            },
+            "other": [
+                {
+                    "title": "Sides",
+                    "items": [
+                        {
+                            "title": "Fries",
+                            "description": null,
+                            "price": 3,
+                            "available": true
+                        },
+                        {
+                            "title": "Mashed Potato",
+                            "description": null,
+                            "price": 4,
+                            "available": true
+                        },
+                        {
+                            "title": "Green Beans",
+                            "description": null,
+                            "price": 4,
+                            "available": true
+                        },
+                        {
+                            "title": "Corn",
+                            "description": null,
+                            "price": 4,
+                            "available": true
+                        },
+                        {
+                            "title": "Cole Slaw",
+                            "description": null,
+                            "price": 4,
+                            "available": true
+                        },
+                        {
+                            "title": "Cornbread",
+                            "description": null,
+                            "price": 5,
+                            "available": true
+                        }
+                    ]
+                },
+                {
+                    "title": "Drinks",
+                    "items": [
+                        {
+                            "title": "Drink 1",
+                            "description": null,
+                            "price": 2,
+                            "available": true
+                        },
+                        {
+                            "title": "Drink 2",
+                            "description": null,
+                            "price": 1,
+                            "available": true
+                        },
+                        {
+                            "title": "Drink 3",
+                            "description": null,
+                            "price": 1,
+                            "available": true
+                        },
+                        {
+                            "title": "Drink 4",
+                            "description": null,
+                            "price": 1,
+                            "available": true
+                        },
+                        {
+                            "title": "Drink 5",
+                            "description": null,
+                            "price": 1,
+                            "available": true
+                        }
+                    ]
+                },
+                {
+                    "title": "Desserts",
+                    "items": [
+                        {
+                            "title": "Pie",
+                            "description": null,
+                            "price": 2,
+                            "available": true
+                        },
+                        {
+                            "title": "Cake",
+                            "description": null,
+                            "price": 5,
+                            "available": true
+                        },
+                        {
+                            "title": "Sundae",
+                            "description": null,
+                            "price": 7,
+                            "available": true
+                        },
+                        {
+                            "title": "Cheesecake",
+                            "description": null,
+                            "price": 9,
+                            "available": true
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
