@@ -1,14 +1,14 @@
 <!doctype html>
-<html ng-app="TamMenuAdmin">
+<html ng-app="MenuAdmin">
     <head>
         <title>Menu Admin</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
         <meta name="description" content="Menu Admin">
-        <link rel="icon" type="image/png" href="../img/tamfav.png">
+        <link rel="icon" type="image/png" href="../img/trs_fav.ico">
         <link rel="stylesheet" href="../lib/styles/bootstrap_4_5/bootstrap.min.css">
         <link rel="stylesheet" href="../lib/styles/paper-dashboard/paper-dashboard.css">
-        <link rel="stylesheet" href="../styles/tam-icons.css">
+        <link rel="stylesheet" href="../styles/trs-icons.css">
         <link rel="stylesheet" href="../styles/admin/admin.css">
         <script src="../lib/script/angular_1_8/angular.min.js"></script>
         <script src="../lib/script/ui-bootstrap_2_5/ui-bootstrap.min.js"></script>
@@ -16,7 +16,7 @@
     <body>
         <div class="container p-3 ng-cloak">
           <uib-tabset active="0">
-            <uib-tab index="0" heading="Availability" class="tam_admin_tab" select="funcs.onTabSelected(0)">
+            <uib-tab index="0" heading="Availability" class="trs_admin_tab" select="funcs.onTabSelected(0)">
               <div ng-controller="Availability" class="container">
                 <div class="row align-items-center my-3" ng-if="menu">
                   <div class="col-10">
@@ -27,16 +27,16 @@
                   </div>
                 </div>
                 <div class="row my-3">
-                  <div class="col card tam-admin_avail_groups">
-                    <div ng-repeat="itemGroup in itemGroups" class="tam-admin_avail_group">
+                  <div class="col card trs-admin_avail_groups">
+                    <div ng-repeat="itemGroup in itemGroups" class="trs-admin_avail_group">
                       <div>
-                        <h5 class="tam-admin_avail_group-title">{{itemGroup.title}}</h5>
-                        <div class="tam-admin_avail_group-items">
-                          <div ng-repeat="item in itemGroup.items" class="tam-admin_avail_group-item">
-                            <div class="tam-admin_avail_group-item-title">{{item.title}}</div>
-                            <label class="tam-admin_switch">
+                        <h5 class="trs-admin_avail_group-title">{{itemGroup.title}}</h5>
+                        <div class="trs-admin_avail_group-items">
+                          <div ng-repeat="item in itemGroup.items" class="trs-admin_avail_group-item">
+                            <div class="trs-admin_avail_group-item-title">{{item.title}}</div>
+                            <label class="trs-admin_switch">
                               <input type="checkbox" ng-model="item.available" ng-change="funcs.onItemAvailableChange()">
-                              <span class="tam-admin_switch-slider"></span>
+                              <span class="trs-admin_switch-slider"></span>
                             </label>
                           </div>
                         </div>
@@ -46,11 +46,11 @@
                 </div>
               </div>
             </uib-tab>
-            <uib-tab index="1" heading="Menus" class="tam_admin_tab" select="funcs.onTabSelected(1)">
+            <uib-tab index="1" heading="Menus" class="trs_admin_tab" select="funcs.onTabSelected(1)">
               <div ng-controller="Menus" class="container">
                 <div class="row align-items-center my-3">
                   <div class="col-4">
-                    <div class="tam-admin_menus_select">
+                    <div class="trs-admin_menus_select">
                       <select class="form-control" ng-model="menuSelect.selected" ng-change="menuSelect.funcs.onChange()">
                         <option ng-repeat="menu in menuSelect.opts" data-modified="{{menu.modified}}" value="{{menu.id}}">{{menu.name}}</option>
                       </select>
@@ -71,16 +71,16 @@
                   </div>
                 </div>
                 <div class="row my-3" ng-if="menu">
-                  <div class="col card tam-admin_menus_card tam-admin_menus_food">
-                    <div class="tam-admin_menus_card-header">
-                      <h4 class="tam-admin_menus_card-header-title">Food</h4>
+                  <div class="col card trs-admin_menus_card trs-admin_menus_food">
+                    <div class="trs-admin_menus_card-header">
+                      <h4 class="trs-admin_menus_card-header-title">Food</h4>
                     </div>
                     <table class="table table-striped">
                       <colgroup>
-                        <col span="1" class="tam-admin_menus_title">
-                        <col span="1" class="tam-admin_menus_desc">
-                        <col span="1" class="tam-admin_menus_price">
-                        <col span="1" class="tam-admin_menus_actions">
+                        <col span="1" class="trs-admin_menus_title">
+                        <col span="1" class="trs-admin_menus_desc">
+                        <col span="1" class="trs-admin_menus_price">
+                        <col span="1" class="trs-admin_menus_actions">
                      </colgroup>
                       <thead>
                         <tr>
@@ -92,21 +92,21 @@
                       </thead>
                       <tbody>
                         <tr ng-repeat="item in menu.food.items">
-                          <td class="align-top tam-admin_input tam-admin_menus_title" data-modified="{{item.titleModified}}">
+                          <td class="align-top trs-admin_input trs-admin_menus_title" data-modified="{{item.titleModified}}">
                             <input type="text" class="w-100" placeholder="&lt;item title&gt;" ng-model="item.title">
                           </td>
-                          <td class="align-top tam-admin_input tam-admin_menus_desc" data-modified="{{item.descriptionModified}}">
+                          <td class="align-top trs-admin_input trs-admin_menus_desc" data-modified="{{item.descriptionModified}}">
                             <textarea class="w-100" rows="3" placeholder="&lt;item description&gt;" ng-model="item.description"></textarea>
                           </td>
-                          <td class="align-top tam-admin_input tam-admin_menus_price" data-modified="{{item.priceModified}}">
+                          <td class="align-top trs-admin_input trs-admin_menus_price" data-modified="{{item.priceModified}}">
                             <input type="number" class="w-100" step="0.25" ng-model="item.price">
                           </td>
-                          <td class="align-top tam-admin_menus_actions">
-                            <div class="tam-admin_menus_actions-bttns">
-                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-up dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isFirstItem(item, menu.food)}}" data-visible="true" ng-click="funcs.moveItemUp(item, menu.food)"></i>
-                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-down dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isLastItem(item, menu.food)}}" data-visible="true" ng-click="funcs.moveItemDown(item, menu.food)"></i>
-                              <i class="tam-icon-bttn tam-icon-bttn_danger tam-icon_minus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeItem(item, menu.food)"></i>
-                              <i class="tam-icon-bttn tam-icon-bttn_success tam-icon_plus tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addItem(item, menu.food)"></i>
+                          <td class="align-top trs-admin_menus_actions">
+                            <div class="trs-admin_menus_actions-bttns">
+                              <i class="trs-icon-bttn trs-icon-bttn_primary trs-icon_chevron-circle-up dark trs-admin_menus_action-bttn" data-disabled="{{funcs.isFirstItem(item, menu.food)}}" data-visible="true" ng-click="funcs.moveItemUp(item, menu.food)"></i>
+                              <i class="trs-icon-bttn trs-icon-bttn_primary trs-icon_chevron-circle-down dark trs-admin_menus_action-bttn" data-disabled="{{funcs.isLastItem(item, menu.food)}}" data-visible="true" ng-click="funcs.moveItemDown(item, menu.food)"></i>
+                              <i class="trs-icon-bttn trs-icon-bttn_danger trs-icon_minus dark trs-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeItem(item, menu.food)"></i>
+                              <i class="trs-icon-bttn trs-icon-bttn_success trs-icon_plus trs-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addItem(item, menu.food)"></i>
                             </div>
                           </td>
                         </tr>
@@ -115,21 +115,21 @@
                   </div>
                 </div>
                 <div ng-repeat="other in menu.other" class="row my-3">
-                  <div class="col card tam-admin_menus_card tam-admin_menus_other">
-                    <div class="tam-admin_menus_card-header">
-                      <h4 class="tam-admin_input tam-admin_menus_card-header-title data-modified="{{other.titleModified}}"><input type="text" class="w-100" placeholder="&lt;item group title&gt;" ng-model="other.title"></h4>
-                      <div class="tam-admin_menus_actions-bttns tam-admin_menus_card-header-actions">
-                        <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-up dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isFirstOtherItemGroup(other)}}" data-visible="true" ng-click="funcs.moveOtherItemGroupUp(other)"></i>
-                        <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-down dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isLastOtherItemGroup(other)}}" data-visible="true" ng-click="funcs.moveOtherItemGroupDown(other)"></i>
-                        <i class="tam-icon-bttn tam-icon-bttn_danger tam-icon_minus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeOtherItemGroup(other)"></i>
-                        <i class="tam-icon-bttn tam-icon-bttn_success tam-icon_plus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addOtherItemGroup(other)"></i>
+                  <div class="col card trs-admin_menus_card trs-admin_menus_other">
+                    <div class="trs-admin_menus_card-header">
+                      <h4 class="trs-admin_input trs-admin_menus_card-header-title data-modified="{{other.titleModified}}"><input type="text" class="w-100" placeholder="&lt;item group title&gt;" ng-model="other.title"></h4>
+                      <div class="trs-admin_menus_actions-bttns trs-admin_menus_card-header-actions">
+                        <i class="trs-icon-bttn trs-icon-bttn_primary trs-icon_chevron-circle-up dark trs-admin_menus_action-bttn" data-disabled="{{funcs.isFirstOtherItemGroup(other)}}" data-visible="true" ng-click="funcs.moveOtherItemGroupUp(other)"></i>
+                        <i class="trs-icon-bttn trs-icon-bttn_primary trs-icon_chevron-circle-down dark trs-admin_menus_action-bttn" data-disabled="{{funcs.isLastOtherItemGroup(other)}}" data-visible="true" ng-click="funcs.moveOtherItemGroupDown(other)"></i>
+                        <i class="trs-icon-bttn trs-icon-bttn_danger trs-icon_minus dark trs-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeOtherItemGroup(other)"></i>
+                        <i class="trs-icon-bttn trs-icon-bttn_success trs-icon_plus dark trs-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addOtherItemGroup(other)"></i>
                     </div>
                     </div>
                     <table class="table table-striped">
                       <colgroup>
-                        <col span="1" class="tam-admin_menus_title">
-                        <col span="1" class="tam-admin_menus_price">
-                        <col span="1" class="tam-admin_menus_actions">
+                        <col span="1" class="trs-admin_menus_title">
+                        <col span="1" class="trs-admin_menus_price">
+                        <col span="1" class="trs-admin_menus_actions">
                       </colgroup>
                       <thead>
                         <tr>
@@ -140,18 +140,18 @@
                       </thead>
                       <tbody>
                         <tr ng-repeat="item in other.items">
-                          <td class="align-top tam-admin_input tam-admin_menus_title" data-modified="{{item.titleModified}}">
+                          <td class="align-top trs-admin_input trs-admin_menus_title" data-modified="{{item.titleModified}}">
                             <input type="text" class="w-100" placeholder="&lt;item title&gt;" ng-model="item.title">
                           </td>
-                          <td class="align-top tam-admin_input tam-admin_menus_price" data-modified="{{item.priceModified}}">
+                          <td class="align-top trs-admin_input trs-admin_menus_price" data-modified="{{item.priceModified}}">
                             <input type="number" class="w-100" step="0.25" ng-model="item.price">
                           </td>
-                          <td class="tam-admin_menus_actions">
-                            <div class="tam-admin_menus_actions-bttns">
-                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-up dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isFirstItem(item, other)}}" data-visible="true" ng-click="funcs.moveItemUp(item, other)"></i>
-                              <i class="tam-icon-bttn tam-icon-bttn_primary tam-icon_chevron-circle-down dark tam-admin_menus_action-bttn" data-disabled="{{funcs.isLastItem(item, other)}}" data-visible="true" ng-click="funcs.moveItemDown(item, other)"></i>
-                              <i class="tam-icon-bttn tam-icon-bttn_danger tam-icon_minus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeItem(item, other)"></i>
-                              <i class="tam-icon-bttn tam-icon-bttn_success tam-icon_plus dark tam-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addItem(item, other)"></i>
+                          <td class="trs-admin_menus_actions">
+                            <div class="trs-admin_menus_actions-bttns">
+                              <i class="trs-icon-bttn trs-icon-bttn_primary trs-icon_chevron-circle-up dark trs-admin_menus_action-bttn" data-disabled="{{funcs.isFirstItem(item, other)}}" data-visible="true" ng-click="funcs.moveItemUp(item, other)"></i>
+                              <i class="trs-icon-bttn trs-icon-bttn_primary trs-icon_chevron-circle-down dark trs-admin_menus_action-bttn" data-disabled="{{funcs.isLastItem(item, other)}}" data-visible="true" ng-click="funcs.moveItemDown(item, other)"></i>
+                              <i class="trs-icon-bttn trs-icon-bttn_danger trs-icon_minus dark trs-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.removeItem(item, other)"></i>
+                              <i class="trs-icon-bttn trs-icon-bttn_success trs-icon_plus dark trs-admin_menus_action-bttn" data-disabled="0" data-visible="1" ng-click="funcs.addItem(item, other)"></i>
                             </div>
                           </td>
                         </tr>
@@ -161,7 +161,7 @@
                 </div>
               </div>
             </uib-tab>
-            <uib-tab index="2" heading="Settings" class="tam_admin_tab" select="funcs.onTabSelected(2)">
+            <uib-tab index="2" heading="Settings" class="trs_admin_tab" select="funcs.onTabSelected(2)">
               <div ng-controller="Settings" class="container">
                 <div class="row align-items-center my-3">
                   <div class="col-10"></div>
@@ -170,23 +170,23 @@
                   </div>
                 </div>
                 <div class="row my-3">
-                  <div class="col card tam-admin_settings_card">
-                    <div class="tam-admin_settings_setting">
-                      <div class="tam-admin_settings_setting-label">Theme</div>
-                      <div class="tam-admin_input tam-admin_settings_setting-value" data-modified="{{theme.modified}}">
-                        <div class="form-check form-check-inline tam-admin_settings_radio">
-                          <input type="radio" id="setting-theme-dark" class="form-check-input tam-admin_input" value="dark" ng-model="theme.value">
+                  <div class="col card trs-admin_settings_card">
+                    <div class="trs-admin_settings_setting">
+                      <div class="trs-admin_settings_setting-label">Theme</div>
+                      <div class="trs-admin_input trs-admin_settings_setting-value" data-modified="{{theme.modified}}">
+                        <div class="form-check form-check-inline trs-admin_settings_radio">
+                          <input type="radio" id="setting-theme-dark" class="form-check-input trs-admin_input" value="dark" ng-model="theme.value">
                           <label for="setting-theme-dark" class="form-check-label">Dark</label>
                         </div>
-                        <div class="form-check form-check-inline tam-admin_settings_radio">
-                          <input type="radio" id="setting-theme-light" class="form-check-input tam-admin_input" value="light" ng-model="theme.value">
+                        <div class="form-check form-check-inline trs-admin_settings_radio">
+                          <input type="radio" id="setting-theme-light" class="form-check-input trs-admin_input" value="light" ng-model="theme.value">
                           <label for="setting-theme-light" class="form-check-label">Light</label>
                         </div>
                       </div>
                     </div>
-                    <div class="tam-admin_settings_setting">
-                      <div class="tam-admin_settings_setting-label">Progression Delay</div>
-                      <div class="tam-admin_input tam-admin_settings_setting-value" data-modified="{{progressionDelay.modified}}">
+                    <div class="trs-admin_settings_setting">
+                      <div class="trs-admin_settings_setting-label">Progression Delay</div>
+                      <div class="trs-admin_input trs-admin_settings_setting-value" data-modified="{{progressionDelay.modified}}">
                         <input type="number" ng-model="progressionDelay.value" min="1">
                       </div>
                     </div>
@@ -197,11 +197,11 @@
           </uib-tabset>
         </div>
         <script type="text/ng-template" id="alertModal.html">
-          <div class="modal-header tam-admin_modal-header">
+          <div class="modal-header trs-admin_modal-header">
               <h6 class="modal-title" id="modal-title">{{title}}</h6>
           </div>
-          <div class="modal-body tam-admin_modal-body" id="modal-body">{{message}}</div>
-          <div class="modal-footer tam-admin_modal-fotter">
+          <div class="modal-body trs-admin_modal-body" id="modal-body">{{message}}</div>
+          <div class="modal-footer trs-admin_modal-fotter">
             <div class="row span2">
               <div class="col">
                 <button class="btn btn-primary btn-lg btn-block" type="button" ng-click="$ctrl.ok()">Ok</button>
@@ -210,11 +210,11 @@
           </div>
         </script>
         <script type="text/ng-template" id="confirmationModal.html">
-          <div class="modal-header tam-admin_modal-header">
+          <div class="modal-header trs-admin_modal-header">
               <h6 class="modal-title" id="modal-title">{{title}}</h6>
           </div>
-          <div class="modal-body tam-admin_modal-body" id="modal-body">{{message}}</div>
-          <div class="modal-footer tam-admin_modal-fotter">
+          <div class="modal-body trs-admin_modal-body" id="modal-body">{{message}}</div>
+          <div class="modal-footer trs-admin_modal-fotter">
             <div class="row span2">
               <div class="col">
                 <button class="btn btn-primary btn-lg btn-block" type="button" ng-click="$ctrl.yes()">Yes</button>
@@ -226,19 +226,19 @@
           </div>
         </script>
         <script type="text/ng-template" id="newMenuModal.html">
-          <div class="modal-header tam-admin_modal-header">
+          <div class="modal-header trs-admin_modal-header">
               <h6 class="modal-title" id="modal-title">Create New Menu</h6>
           </div>
-          <div class="modal-body tam-admin_modal-body" id="modal-body">
+          <div class="modal-body trs-admin_modal-body" id="modal-body">
             <form class="form-vertical">
-              <div class="form-group tam-admin_modal-input">
+              <div class="form-group trs-admin_modal-input">
                 <label for="menuName">Menu Name</label>
                 <input id="menuName" type="text" autocomplete="off" class="form-control {{menuNameInputClasses}}" ng-model="menuName" ng-class="{'is-invalid': isMenuNameInvalid}">
                 <div ng-if="isMenuNameInvalid" class="col text-danger">Menu name already exists.</div>
               </div>
             </form>
           </div>
-          <div class="modal-footer tam-admin_modal-fotter">
+          <div class="modal-footer trs-admin_modal-fotter">
             <div class="row span2">
               <div class="col">
                 <button class="btn btn-primary btn-lg btn-block" type="button" ng-click="$ctrl.create()" ng-disabled="!isCreateBttnEnabled">Create</button>

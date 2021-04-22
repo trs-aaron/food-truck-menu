@@ -6,7 +6,7 @@ import PLACEHOLDER from './PLACEHOLDER.js';
 import STRING from './STRING.js';
 
 
-const app = angular.module('TamMenuAdmin', ['ui.bootstrap']);
+const app = angular.module('MenuAdmin', ['ui.bootstrap']);
 
 
 app.factory( 'init', ['$rootScope', '$uibModal', async ($rootScope, $uibModal) => {

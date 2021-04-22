@@ -21,7 +21,7 @@ class MenuItemField {
     }
 }
 
-MenuItemField.EL_CLASS = 'tam-menu_item_field'
+MenuItemField.EL_CLASS = 'trs-menu_item_field'
 
 
 class MenuItem {
@@ -69,7 +69,7 @@ class MenuItem {
     }
 }
 
-MenuItem.EL_CLASS = 'tam-menu_item';
+MenuItem.EL_CLASS = 'trs-menu_item';
 MenuItem.AVAILABLE_ATTR = 'data-is-available';
 MenuItem.VISIBLE_ATTR = 'data-is-visible';
 
@@ -258,7 +258,7 @@ class MenuItemCntr {
     }
 }
 
-MenuItemCntr.ITEMS_EL_CLASS = 'tam-menu_items-cntr';
+MenuItemCntr.ITEMS_EL_CLASS = 'trs-menu_items-cntr';
 
 
 class MenuCntr {
@@ -426,11 +426,11 @@ class MenuCntr {
 
         switch(this._theme.value) {
             case 'light':
-                themeClass = 'tam-menu_theme_light';
+                themeClass = 'trs-menu_theme_light';
                 break;
 
             default:
-                themeClass = 'tam-menu_theme_dark';
+                themeClass = 'trs-menu_theme_dark';
                 break;
         }
 
@@ -505,16 +505,16 @@ class MenuCntr {
 }
 
 MenuCntr.DEFAULT_PROGRESSION_DELAY = 10000;
-MenuCntr.CNTR_ID = 'tam-menu_cntr';
-MenuCntr.FOOD_CNTR_ID = 'tam-menu_food';
-MenuCntr.OTHER_CNTR_ID = 'tam-menu_other';
-MenuCntr.ITEMS_EL_CLASS = 'tam-menu_items';
+MenuCntr.CNTR_ID = 'trs-menu_cntr';
+MenuCntr.FOOD_CNTR_ID = 'trs-menu_food';
+MenuCntr.OTHER_CNTR_ID = 'trs-menu_other';
+MenuCntr.ITEMS_EL_CLASS = 'trs-menu_items';
 MenuCntr.VISIBLE_ATTR = 'data-is-visible';
 MenuCntr.HAS_FOOD_ATTR = 'data-has-food';
 MenuCntr.OTHER_COUNT_ATTR = 'data-other-count';
-MenuCntr.CNTR_TMPL_ID = 'tam-menu-container-TEMPLATE';
-MenuCntr.FOOD_ITEMS_TMPL_ID = 'tam-menu-food-items-TEMPLATE';
-MenuCntr.EXTRA_ITEMS_TMPL_ID = 'tam-menu-extra-items-TEMPLATE';
+MenuCntr.CNTR_TMPL_ID = 'trs-menu-container-TEMPLATE';
+MenuCntr.FOOD_ITEMS_TMPL_ID = 'trs-menu-food-items-TEMPLATE';
+MenuCntr.EXTRA_ITEMS_TMPL_ID = 'trs-menu-extra-items-TEMPLATE';
 
 
 window.onload = async () => {
